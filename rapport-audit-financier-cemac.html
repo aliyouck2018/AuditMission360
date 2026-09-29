@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Rapport de projets portfolio numériques pour l’audit financier dans les six pays de la CEMAC.">
+  <title>Projets portfolio — Audit financier en zone CEMAC</title>
+  <style>
+    @page { size:A4; margin:15mm 14mm; }
+    :root { --ink:#1b2835; --navy:#12324a; --blue:#1d6f9f; --teal:#17857c; --pale:#edf6f8; --line:#d0dce2; --muted:#5d6d78; --gold:#b88318; --white:#fff; --red:#9b4636; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:#f3f6f8; font:15px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif; }
+    a { color:#126b91; text-decoration-thickness:1px; text-underline-offset:3px; overflow-wrap:anywhere; }
+    a:hover { color:#0b455f; }
+    .sheet { max-width:1120px; margin:28px auto; padding:58px 68px 70px; background:var(--white); box-shadow:0 14px 48px #12324a12; }
+    .cover { min-height:690px; display:flex; flex-direction:column; justify-content:center; padding:12px 0 52px; border-bottom:1px solid var(--line); }
+    .eyebrow { color:var(--teal); text-transform:uppercase; letter-spacing:.17em; font-size:12px; font-weight:850; }
+    h1 { color:var(--navy); font-size:clamp(40px,6vw,68px); line-height:1.03; letter-spacing:-.045em; margin:24px 0 16px; max-width:850px; }
+    .subtitle { max-width:770px; color:var(--muted); font-size:21px; line-height:1.45; }
+    .cover-mark { width:78px; height:6px; border-radius:99px; background:linear-gradient(90deg,var(--teal) 0 68%,var(--gold) 68%); margin:22px 0; }
+    .meta { display:flex; gap:28px; flex-wrap:wrap; color:var(--muted); font-size:13px; margin-top:28px; }
+    .cover-note { margin-top:48px; padding:20px 24px; border:1px solid #cbe4e2; border-radius:14px; background:linear-gradient(120deg,#eff9f8,#f8fbfc); max-width:840px; }
+    .cover-note strong { color:var(--navy); }
+    h2 { color:var(--navy); font-size:28px; line-height:1.2; margin:54px 0 17px; letter-spacing:-.025em; scroll-margin-top:20px; }
+    h3 { color:var(--navy); font-size:19px; margin:0 0 9px; line-height:1.3; }
+    h4 { color:var(--blue); margin:17px 0 6px; font-size:14px; }
+    p { margin:7px 0 13px; }
+    .lede { color:#465967; font-size:17px; max-width:900px; }
+    .toc { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 22px; padding:22px 25px; border:1px solid var(--line); border-radius:14px; background:#fbfcfd; }
+    .toc a { text-decoration:none; font-weight:650; }
+    .callout { margin:18px 0; padding:17px 20px; border-radius:10px; background:#eaf6f6; border-left:5px solid var(--teal); }
+    .callout.gold { background:#fff8e9; border-color:var(--gold); }
+    .callout.dark { background:var(--navy); color:#eef5f8; border:0; }
+    .callout.dark strong { color:#fff; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; }
+    .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .card { border:1px solid var(--line); border-radius:13px; padding:19px; background:#fff; break-inside:avoid; }
+    .card.tint { background:#f7fbfc; }
+    .card p:last-child,.card ul:last-child { margin-bottom:0; }
+    .badge { display:inline-flex; align-items:center; border-radius:99px; padding:3px 10px; margin-bottom:9px; color:#155d75; background:#e8f4f6; font-size:11px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
+    .badge.gold { color:#75580f; background:#fff2d1; }
+    .badge.green { color:#1b674e; background:#e7f5ed; }
+    ul,ol { margin:7px 0 13px; padding-left:22px; }
+    li { margin:4px 0; }
+    .stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:24px 0; }
+    .stat { background:var(--navy); color:#fff; border-radius:13px; padding:17px; min-height:115px; }
+    .stat strong { display:block; color:#fff; font-size:24px; letter-spacing:-.03em; }
+    .stat span { display:block; margin-top:4px; color:#c4d7e4; font-size:12px; line-height:1.4; }
+    table { border-collapse:collapse; width:100%; margin:14px 0 22px; font-size:13px; }
+    th { text-align:left; color:#fff; background:var(--navy); padding:10px 11px; }
+    td { padding:10px 11px; border:1px solid var(--line); vertical-align:top; }
+    tbody tr:nth-child(even) { background:#f7fafb; }
+    .muted,.small { color:var(--muted); }
+    .small { font-size:12px; }
+    .project { border-top:4px solid var(--teal); }
+    .project.featured { border-top-color:var(--gold); }
+    .pill { display:inline-block; border-radius:20px; padding:3px 8px; margin:1px 2px 2px 0; background:#eef2f5; color:#425363; font-size:11px; }
+    .workflow { counter-reset:step; list-style:none; padding:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+    .workflow li { counter-increment:step; border:1px solid var(--line); border-radius:10px; padding:15px; margin:0; background:#fbfcfd; }
+    .workflow li::before { content:counter(step, decimal-leading-zero); display:block; color:var(--teal); font-weight:900; font-size:12px; margin-bottom:6px; }
+    .phase { display:grid; grid-template-columns:130px 1fr; gap:15px; border-left:2px solid #b6dadd; margin-left:11px; padding:0 0 22px 22px; break-inside:avoid; }
+    .phase time { font-weight:800; color:var(--teal); }
+    .sources li { margin-bottom:9px; }
+    footer { margin-top:54px; border-top:1px solid var(--line); padding-top:18px; color:var(--muted); font-size:12px; }
+    .print-button { position:fixed; right:22px; bottom:22px; z-index:2; border:0; border-radius:99px; background:var(--navy); color:#fff; padding:12px 18px; font:inherit; font-weight:750; box-shadow:0 8px 22px #12324a30; cursor:pointer; }
+    @media (max-width:800px) { .sheet { margin:0; padding:34px 24px 48px; } .cover { min-height:610px; } .grid.three { grid-template-columns:repeat(2,minmax(0,1fr)); } .stats { grid-template-columns:repeat(2,minmax(0,1fr)); } .workflow { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:560px) { body { font-size:14px; } .sheet { padding:26px 17px 40px; } .cover { min-height:560px; } .subtitle { font-size:18px; } h2 { font-size:24px; } .grid,.grid.three,.toc { grid-template-columns:1fr; } .phase { grid-template-columns:1fr; gap:2px; } table { font-size:11px; } th,td { padding:7px; } .print-button { right:12px; bottom:12px; } }
+    @media print {
+      body { background:#fff; font-size:11pt; }
+      .sheet { max-width:none; margin:0; padding:0; box-shadow:none; }
+      .cover { min-height:255mm; page-break-after:always; }
+      .print-button { display:none; }
+      h2 { page-break-after:avoid; }
+      .card,.stat,.callout,table,.workflow li { break-inside:avoid; }
+      a { color:inherit; }
+      a[href^="http"]::after { content:" (" attr(href) ")"; font-size:8pt; color:#52636f; }
+      .toc a::after { content:none; }
+    }
+  </style>
+</head>
+<body>
+<button class="print-button" onclick="window.print()" aria-label="Imprimer ou enregistrer ce rapport en PDF">Imprimer / PDF</button>
+<main class="sheet">
+  <header class="cover">
+    <div class="eyebrow">Étude de portefeuille · six pays CEMAC · septembre 2026</div>
+    <div class="cover-mark"></div>
+    <h1>Des outils numériques utiles à l’audit financier en zone CEMAC</h1>
+    <p class="subtitle">Un rapport de projets portfolio à développer dans la continuité de <a href="https://brokercontrol360.vercel.app/">BrokerControl360</a> : planification des missions, contrôle de pièces, analyse de données, suivi des écarts et traçabilité des travaux.</p>
+    <div class="meta">
+      <span><strong>Objet</strong> · démonstrateurs professionnels</span>
+      <span><strong>Zone</strong> · Cameroun, RCA, Congo, Gabon, Guinée équatoriale, Tchad</span>
+      <span><strong>Public cible</strong> · cabinets, audit interne, finance, conformité et régulateurs</span>
+    </div>
+    <div class="cover-note"><strong>Recommandation en une phrase.</strong> Commencer par <em>AuditMission360</em>, un espace de mission qui relie risques, assertions, programmes de travail, échantillons, éléments probants, revue et constats. Puis bâtir <em>CreditAudit CEMAC</em> et <em>CloseControl360</em> autour de cas financiers plus spécialisés.</div>
+  </header>
+
+  <section id="synthese">
+    <h2>Sommaire</h2>
+    <nav class="toc" aria-label="Sommaire">
+      <a href="#synthese">1. Synthèse et recommandation</a>
+      <a href="#cadre">2. Cadre professionnel et marché</a>
+      <a href="#besoins">3. Besoins et angles d’opportunité</a>
+      <a href="#projets">4. Sept projets portfolio</a>
+      <a href="#mission">5. Projet prioritaire : AuditMission360</a>
+      <a href="#demo">6. Scénario de démonstration</a>
+      <a href="#architecture">7. Architecture et données</a>
+      <a href="#plan">8. Feuille de route</a>
+      <a href="#cibles">9. Cibles et présentation du portfolio</a>
+      <a href="#garde-fous">10. Garde-fous réglementaires et éthiques</a>
+      <a href="#sources">11. Sources et références</a>
+    </nav>
+
+    <h2>1. Synthèse et recommandation</h2>
+    <p class="lede">BrokerControl360 montre déjà la capacité à organiser des données financières, des contrôles, des rôles, des validations et des rapports dans un produit B2B. Pour aborder l’audit, le meilleur prolongement est de rendre visible le raisonnement de mission : pourquoi le risque est retenu, quel test est exécuté, quelle preuve le soutient, qui l’a revue et quelle conclusion humaine en découle.</p>
+    <div class="callout dark"><strong>Projet phare conseillé — AuditMission360.</strong> Un cockpit de mission d’audit fictive : entité et période → compréhension des processus → risques/assertions → programme de travail → sélection et contrôle d’échantillons → constats → revue senior → lettre de recommandations et rapport de mission simulé. Le produit assiste la documentation ; il ne remplace ni les normes professionnelles, ni l’auditeur responsable, ni l’opinion du commissaire aux comptes.</div>
+    <div class="stats" aria-label="Indicateurs du système financier CEMAC en 2024">
+      <div class="stat"><strong>56 banques</strong><span>En activité dans le périmètre présenté par le rapport COBAC 2024</span></div>
+      <div class="stat"><strong>24 967 Md</strong><span>FCFA de total de bilan agrégé des banques, données 2024</span></div>
+      <div class="stat"><strong>16,2 %</strong><span>Créances en souffrance rapportées en pourcentage des crédits bruts</span></div>
+      <div class="stat"><strong>521 EMF</strong><span>Établissements de microfinance recensés ; taux de créances en souffrance : 17,1 %</span></div>
+    </div>
+    <p class="small">Chiffres tirés du rapport annuel COBAC 2024. Ils sont des signaux de contexte et non des mesures de demande commerciale pour un logiciel d’audit.</p>
+    <div class="grid three">
+      <article class="card"><span class="badge gold">Priorité 1</span><h3>AuditMission360</h3><p>Cycle de vie d’une mission, contrôle qualité, pièces et piste d’audit. C’est la démo qui exprime le mieux la méthode d’audit.</p></article>
+      <article class="card"><span class="badge">Priorité 2</span><h3>CreditAudit CEMAC</h3><p>Analyse des dossiers de crédit, retards, garanties et provisions à partir de données synthétiques. Forte pertinence bancaire, microfinance et audit interne.</p></article>
+      <article class="card"><span class="badge green">Priorité 3</span><h3>CloseControl360</h3><p>Rapprochements, contrôles de clôture et anomalies de grand livre. Un cas d’usage transversal pour directions financières et cabinets.</p></article>
+    </div>
+    <div class="callout gold"><strong>À retenir.</strong> L’OHADA harmonise le droit comptable et les pratiques d’audit, mais l’AUDCIF exclut du SYSCOHADA plusieurs catégories d’institutions financières assujetties à leurs règles sectorielles. Un produit crédible doit laisser sélectionner le référentiel et le secteur, et éviter d’appliquer une règle comptable unique à toutes les entités.</div>
+  </section>
+
+  <section id="cadre">
+    <h2>2. Cadre professionnel et marché</h2>
+    <h3>Un socle OHADA, des couches sectorielles</h3>
+    <p>Les six États de la CEMAC — Cameroun, République centrafricaine, République du Congo, Gabon, Guinée équatoriale et Tchad — partagent un marché monétaire régional ; ils appartiennent également à l’espace OHADA. L’Acte uniforme relatif au droit comptable et à l’information financière (AUDCIF), son SYSCOHADA révisé et le Règlement OHADA n° 01/2017 encadrent les pratiques professionnelles d’audit et la qualité des interventions dans l’espace OHADA. La réglementation CEMAC et les organismes sectoriels ajoutent toutefois des obligations distinctes.</p>
+    <table>
+      <thead><tr><th>Type d’entité / mission</th><th>Écosystème de règles à examiner</th><th>Opportunité produit</th></tr></thead>
+      <tbody>
+        <tr><td>Sociétés commerciales et groupes</td><td>AUDCIF / SYSCOHADA ; AUSCGIE pour les missions légales ; IFRS lorsque le cadre applicable l’exige ; ISA selon le cadre professionnel OHADA.</td><td>Cartographie des comptes, clôture, consolidation, assertions, seuils et preuves par filiale.</td></tr>
+        <tr><td>Banques et établissements financiers</td><td>Textes COBAC / CEMAC, référentiel comptable sectoriel et diligences spécifiques des commissaires aux comptes des établissements de crédit.</td><td>Tests d’encours, créances en souffrance, garanties, provisions, trésorerie, expositions et reporting prudentiel.</td></tr>
+        <tr><td>Établissements de microfinance (EMF)</td><td>Réglementation et supervision COBAC, règles comptables sectorielles et textes applicables à la catégorie d’établissement.</td><td>Tests ciblés sur portefeuille de prêts, épargne, agences, rapprochements et qualité du reporting.</td></tr>
+        <tr><td>Assureurs et organismes de prévoyance sociale</td><td>Référentiels et règles de supervision spécifiques, notamment CIMA pour les assureurs et CIPRES pour la prévoyance sociale.</td><td>Modules spécialisés ultérieurs : provisions, cotisations, prestations, actifs représentatifs et rapprochements.</td></tr>
+        <tr><td>Émetteurs / acteurs du marché financier régional</td><td>Réglementation COSUMAF, instruction et éventuel agrément de commissaires aux comptes pour les missions concernées, AUDCIF/IFRS selon l’entité.</td><td>Suivi des diligences d’émission, rapports, informations publiées et obligations de contrôle.</td></tr>
+        <tr><td>Entités publiques / projets financés</td><td>Réglementation nationale, règles de finances publiques, bailleurs, marchés publics et référentiels de contrôle applicables.</td><td>Suivi des dépenses, contrats, rapprochements, pièces, jalons, recommandations et preuves.</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Point technique important.</strong> L’article 5 de l’AUDCIF prévoit que les établissements de crédit, EMF, acteurs du marché financier, assureurs/réassureurs, organismes de sécurité/prévoyance sociale et entités à but non lucratif ne sont pas assujettis au SYSCOHADA général. Le prototype doit afficher le référentiel retenu et permettre de distinguer référentiel général, sectoriel et IFRS selon le dossier.</div>
+    <h3>Signaux de contexte tirés des sources récentes</h3>
+    <ul>
+      <li>Le rapport COBAC 2024 dénombre 56 banques et 521 établissements de microfinance dans son état de l’activité financière de la CEMAC.</li>
+      <li>Le même rapport mentionne des créances en souffrance de 2 024 milliards FCFA dans le secteur bancaire, soit 16,2 % des crédits bruts ; le portefeuille EMF en souffrance est donné à 17,1 %.</li>
+      <li>La COBAC indique une évolution vers une supervision fondée sur les risques, ainsi que l’adoption du règlement R-2024/01 sur la gestion du risque informatique dans les établissements assujettis.</li>
+      <li>La COSUMAF a poursuivi la publication d’instructions sectorielles et tient à jour des listes d’acteurs et commissaires aux comptes agréés pour le marché financier régional.</li>
+      <li>Les textes officiels BEAC et OHADA fournissent des ressources numériques publiques : un prototype de data analytics peut travailler sur des extractions CSV anonymisées ou synthétiques sans accès aux systèmes réels des banques.</li>
+    </ul>
+    <p class="small">Les chiffres et règles ci-dessus sont datés par leurs sources. Vérifier la version consolidée de chaque texte, son champ d’application et les directives de place au moment du développement d’un cas client.</p>
+  </section>
+
+  <section id="besoins">
+    <h2>3. Besoins et angles d’opportunité</h2>
+    <div class="grid">
+      <article class="card tint"><h3>1. La mission est documentée dans trop de supports</h3><p>Relier objectifs, risque, programme, échantillon, pièces, commentaires de revue et conclusion sans perdre la provenance des informations.</p></article>
+      <article class="card tint"><h3>2. Les extractions comptables cachent les anomalies</h3><p>Importer un grand livre et révéler doublons, écritures atypiques, dates inhabituelles, numéros manquants, comptes sans libellé ou contre-passations.</p></article>
+      <article class="card tint"><h3>3. Le suivi des recommandations est mal visible</h3><p>Attribuer un propriétaire, une échéance, une criticité, une preuve attendue et une validation indépendante pour chaque action corrective.</p></article>
+      <article class="card tint"><h3>4. Les missions bancaires requièrent des tests ciblés</h3><p>Échantillonner des crédits et relier échéancier, historique des paiements, statut de retard, garantie, classification et provisionnement indicatif.</p></article>
+      <article class="card tint"><h3>5. Le référentiel doit être explicite</h3><p>Faire apparaître dans la mission le pays, le secteur, le référentiel choisi, la date de version et la personne ayant approuvé le mapping des comptes.</p></article>
+      <article class="card tint"><h3>6. La sécurité des pièces est fondamentale</h3><p>Contrôle des accès, journal d’activité, règles de conservation et limites d’export ; les données financières et fichiers de travail sont sensibles.</p></article>
+    </div>
+    <div class="callout gold"><strong>Positionnement différenciant.</strong> Un assistant de mission pour équipes locales et régionales, avec piste d’audit explicable, fonctionnement sur données tabulaires, configuration par référentiel et UX bilingue français/anglais. Éviter les slogans d’« audit automatisé par IA » qui pourraient faire croire qu’une conclusion ou une opinion est générée sans supervision professionnelle.</div>
+  </section>
+
+  <section id="projets">
+    <h2>4. Sept projets portfolio</h2>
+    <p class="lede">Les projets peuvent former une suite « Audit360 », mais chacun doit rester compréhensible et démontrable séparément. Le premier s’adresse à la méthode de mission ; les suivants mettent en valeur des spécialités et des analyses de données.</p>
+    <div class="grid">
+      <article class="card project featured">
+        <span class="badge gold">Projet phare · meilleur point d’entrée</span>
+        <h3>AuditMission360 — dossier de mission et piste d’audit</h3>
+        <p><strong>Pour :</strong> cabinet d’audit externe, direction d’audit interne, superviseur de mission. <strong>Problème :</strong> relier le risque évalué, les travaux réellement exécutés et les éléments probants qui supportent le jugement.</p>
+        <p><strong>Parcours de démo :</strong> créer une mission → choisir pays/secteur/référentiel → identifier cycles et assertions → attribuer risques → planifier tests → documenter résultats et exceptions → revue senior → suivre constats → exporter un dossier de démonstration.</p>
+        <p><strong>Modules :</strong> entités et périodes, planning, équipe, seuil de signification fictif, matrice risques/contrôles, programme de travail configurable, échantillons, preuves, demandes client, notes de revue, constats, clôture.</p>
+        <p><strong>Différenciation :</strong> une pièce pointe vers le test, le compte, la population, le résultat, le préparateur et le réviseur ; toutes les conclusions restent attribuées à un professionnel identifié.</p>
+        <div><span class="pill">statut mission</span><span class="pill">tests achevés</span><span class="pill">points de revue ouverts</span><span class="pill">preuves manquantes</span></div>
+      </article>
+      <article class="card project">
+        <span class="badge">Audit de données</span>
+        <h3>AuditData360 — tests de grand livre et journal entries</h3>
+        <p><strong>Pour :</strong> auditeurs financiers, contrôle interne et forensic. <strong>Problème :</strong> explorer vite de gros fichiers de transactions sans perdre la traçabilité des filtres.</p>
+        <p><strong>Démo :</strong> charger un CSV synthétique → valider format et totaux → exécuter des règles de test → examiner une exception → ouvrir les lignes sources → documenter la résolution.</p>
+        <p><strong>Analyses :</strong> doublons, écritures rondes, écritures en fin de période, heures non usuelles, comptes rares, schémas débit/crédit atypiques, contre-passations, ruptures de séquence, rapprochement auxiliaire/grand livre.</p>
+        <p><strong>Précaution :</strong> les règles flaguent des éléments à investiguer ; elles n’établissent ni fraude ni anomalie significative sans examen humain et preuves appropriées.</p>
+      </article>
+      <article class="card project">
+        <span class="badge">Spécialité bancaire CEMAC</span>
+        <h3>CreditAudit CEMAC — dossier de crédit et créances</h3>
+        <p><strong>Pour :</strong> banque, EMF, audit interne et équipes de commissariat aux comptes autorisées. <strong>Problème :</strong> vérifier la cohérence de l’échantillon crédit depuis l’octroi jusqu’à la classification et au suivi de la garantie.</p>
+        <p><strong>Démo :</strong> importer un portefeuille de test → choisir un échantillon reproductible → parcourir dossier de crédit, échéancier, paiements, retard, garanties et classification → relever un écart → suivre la revue.</p>
+        <p><strong>Contrôles affichés :</strong> décision et délégation, complétude de dossier, rapprochement encours/GL, jours de retard calculés sur données fictives, garantie/document expiré, calcul de provision de démonstration selon règles expressément marquées comme configurables.</p>
+        <p><strong>Indicateurs :</strong> encours échantillonné, pièces manquantes, ruptures de rapprochement, exceptions selon ancienneté, ratio d’éléments revus.</p>
+      </article>
+      <article class="card project">
+        <span class="badge">Clôture financière</span>
+        <h3>CloseControl360 — rapprochements et contrôles de clôture</h3>
+        <p><strong>Pour :</strong> direction financière, comptabilité, auditeur interne et cabinet. <strong>Problème :</strong> rendre visible le statut des rapprochements et la justification des soldes.</p>
+        <p><strong>Démo :</strong> charger balance générale et sous-livre → faire correspondre les comptes → identifier écarts → assigner responsables et échéances → joindre les pièces de test → revue → tableau de clôture signé en démonstration.</p>
+        <p><strong>Modules :</strong> calendrier de clôture, rapprochement banque, comptes d’attente, fournisseurs, immobilisations, provisions, confirmations et suivi d’écritures de régularisation.</p>
+        <p><strong>Différenciation :</strong> séparation claire entre la donnée source, la proposition d’appariement, l’ajustement saisi et sa validation.</p>
+      </article>
+      <article class="card project">
+        <span class="badge">Qualité et recommandations</span>
+        <h3>ControlFollow 360 — constats, plans d’action et revue qualité</h3>
+        <p><strong>Pour :</strong> audit interne, inspection, comité d’audit, qualité en cabinet. <strong>Problème :</strong> constater un point ne garantit pas son traitement ; les actions demandent une responsabilité et une preuve de fermeture.</p>
+        <p><strong>Démo :</strong> émettre un constat de test → évaluer sa criticité selon une échelle configurable → convenir d’un plan → déposer une preuve → revue de fermeture → synthèse au comité.</p>
+        <p><strong>Modules :</strong> registre des constats, cause, risque, responsable, échéance, relance, preuve, validation indépendante, récurrence et vue des retards.</p>
+        <p><strong>Indicateurs :</strong> actions échues, ancienneté des recommandations, taux de clôture et constats récurrents — avec définition de la période et du dénominateur.</p>
+      </article>
+      <article class="card project">
+        <span class="badge">Marché financier</span>
+        <h3>MarketAudit CEMAC — obligations et reporting des acteurs</h3>
+        <p><strong>Pour :</strong> émetteur, société de bourse, société de gestion, équipe de conformité ou auditeur de marché. <strong>Problème :</strong> suivre les calendriers de publication, rapports, contrôles et pièces demandés par le processus.</p>
+        <p><strong>Démo :</strong> inscrire un acteur fictif et ses périodes → lier chaque obligation à son responsable et à un livrable → détecter une pièce manquante → documenter une exception → produire une liste de contrôle.</p>
+        <p><strong>Modules :</strong> échéancier, contrôles des états publiés, confirmations, rapprochement positions/tenue, demandes d’information, journaux et état de préparation.</p>
+        <p><strong>Cadre :</strong> référencer les textes COSUMAF pertinents et leurs versions au lieu d’encoder des obligations supposées sans revue réglementaire.</p>
+      </article>
+      <article class="card project">
+        <span class="badge">Dépenses et projets</span>
+        <h3>PublicSpend Audit — dépenses, contrats et projets financés</h3>
+        <p><strong>Pour :</strong> service d’audit interne public, projet de développement, ONG ou cabinet d’audit contractuel. <strong>Problème :</strong> relier budget, contrat, jalon, facture, paiement, livraison et justificatif.</p>
+        <p><strong>Démo :</strong> sélectionner un projet fictif → importer des dépenses → rapprocher facture/contrat/preuve de réception/paiement → classer une exception → vérifier son traitement à l’étape suivante.</p>
+        <p><strong>Modules :</strong> marchés, avenants, bénéficiaires synthétiques, lots, jalons, pièces, rapprochements et registre de recommandations.</p>
+        <p><strong>Limite :</strong> les règles de passation et de finances publiques varient par pays, source de financement et entité ; elles doivent être configurées et approuvées pour le scénario.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="mission">
+    <h2>5. Projet prioritaire : AuditMission360</h2>
+    <p class="lede">C’est le démonstrateur le plus large et le plus proche de votre expérience : il met l’accent sur contrôles, validations par rôles, suivi des écarts et rapport. Le domaine d’audit impose cependant une exigence particulière : chaque conclusion doit demeurer soutenue par des travaux documentés et une revue humaine.</p>
+    <h3>Périmètre MVP</h3>
+    <div class="grid">
+      <article class="card"><h4>Planification</h4><ul><li>Fiche d’entité, exercice, pays, secteur et équipe fictifs.</li><li>Choix documenté du référentiel comptable/audit du scénario.</li><li>Calendrier, cycles comptables, seuils de démo et jalons de revue.</li><li>Matrice risques ↔ assertions ↔ procédures.</li></ul></article>
+      <article class="card"><h4>Exécution</h4><ul><li>Programme de travail configurable, propriétaire et échéance.</li><li>Populations/échantillons synthétiques, méthode et graine reproductible.</li><li>Pièces jointes de test, référence source, commentaire et résultat.</li><li>Exception avec gravité indicative, réponse et statut de résolution.</li></ul></article>
+      <article class="card"><h4>Supervision</h4><ul><li>Préparateur, réviseur et approbateur distincts.</li><li>Notes de revue bloquantes/non bloquantes à configurer.</li><li>Résolution ou escalade avec réponse documentée.</li><li>Journal de création, modification, décision et horodatage.</li></ul></article>
+      <article class="card"><h4>Restitution</h4><ul><li>Avancement par cycle, équipe, risque et revue.</li><li>Constats classés et actions à suivre.</li><li>Export de dossier de démonstration avec index des pièces.</li><li>Rapport final de mission clairement marqué « simulé ».</li></ul></article>
+    </div>
+    <h3>Rôles de démonstration</h3>
+    <table>
+      <thead><tr><th>Rôle</th><th>Vue principale</th><th>Action de démonstration</th></tr></thead>
+      <tbody>
+        <tr><td>Associé / directeur de mission</td><td>Risques majeurs, arbitrages, avancement et points de clôture.</td><td>Approuve un jalon de revue et les points ouverts de la mission.</td></tr>
+        <tr><td>Manager / superviseur</td><td>Planning, charge de travail, retards, exceptions et revues.</td><td>Réaffecte un test et commente une documentation insuffisante.</td></tr>
+        <tr><td>Auditeur préparateur</td><td>Ses tests, populations, pièces à obtenir et commentaires reçus.</td><td>Documente le test et répond à la note de revue.</td></tr>
+        <tr><td>Expert données</td><td>Import, validation, rapprochements et exceptions calculées.</td><td>Importe le grand livre de test, vérifie les totaux et lance une analyse reproductible.</td></tr>
+        <tr><td>Client — espace de demandes facultatif</td><td>Liste des informations demandées et leur statut de transmission.</td><td>Dépose une pièce factice et répond à une demande.</td></tr>
+        <tr><td>Qualité / inspection</td><td>Lecture seule, piste d’audit, notes de revue et checklist qualité.</td><td>Retrace l’origine d’un constat et vérifie la fermeture documentaire.</td></tr>
+      </tbody>
+    </table>
+    <h3>Indicateurs du cockpit</h3>
+    <table>
+      <thead><tr><th>Indicateur</th><th>Définition de démonstration</th><th>Pourquoi c’est utile</th></tr></thead>
+      <tbody>
+        <tr><td>Avancement des tests planifiés</td><td>Procédures avec résultat soumis / procédures planifiées.</td><td>Voir la couverture des travaux et les retards par cycle.</td></tr>
+        <tr><td>Tests avec preuve liée</td><td>Tests soumis avec au moins une référence probante / tests soumis.</td><td>Repérer les conclusions qui manquent de documentation attachée.</td></tr>
+        <tr><td>Points de revue ouverts</td><td>Nombre et ancienneté des notes non résolues par niveau.</td><td>Prioriser la revue et éviter une clôture prématurée.</td></tr>
+        <tr><td>Exceptions en attente</td><td>Écarts dont la résolution ou la conclusion n’est pas documentée.</td><td>Assurer que les anomalies sont suivies jusqu’à leur évaluation.</td></tr>
+        <tr><td>Charge par membre</td><td>Tests attribués et heures estimatives déclarées dans les données synthétiques.</td><td>Illustrer la coordination d’équipe sans utiliser de données RH réelles.</td></tr>
+      </tbody>
+    </table>
+    <p class="small">Ne pas présenter les KPI de complétude comme une mesure de qualité ou comme une assurance que la mission est conforme aux ISA. Un dossier complet au regard d’une checklist peut rester insuffisant sur le fond.</p>
+  </section>
+
+  <section id="demo">
+    <h2>6. Scénario de démonstration (6 à 8 minutes)</h2>
+    <ol class="workflow">
+      <li><strong>Créer la mission.</strong><br>Choisir une PME fictive de distribution, l’exercice, la monnaie et un référentiel de démonstration clairement affiché.</li>
+      <li><strong>Comprendre le cycle.</strong><br>Consulter ventes, achats, trésorerie et stocks synthétiques ; repérer un risque et l’assertion associée.</li>
+      <li><strong>Planifier.</strong><br>Ouvrir un programme de test configurable et affecter le test à un préparateur avec échéance.</li>
+      <li><strong>Importer.</strong><br>Charger un fichier de grand livre entièrement inventé ; vérifier le schéma, le nombre de lignes et le total débit/crédit.</li>
+      <li><strong>Analyser.</strong><br>Exécuter une règle qui signale une écriture inhabituelle à la clôture ; remonter de l’exception aux lignes sources.</li>
+      <li><strong>Documenter.</strong><br>Enregistrer les procédures complémentaires et les pièces de test ; joindre l’exception au test et au risque initial.</li>
+      <li><strong>Réviser.</strong><br>Changer de rôle, ajouter une note de revue et demander une preuve complémentaire ; le préparateur répond.</li>
+      <li><strong>Conclure et suivre.</strong><br>Soumettre le constat à la revue manager, créer une recommandation fictive et exporter le dossier de mission simulé.</li>
+    </ol>
+    <div class="callout"><strong>Phrase de clôture du pitch.</strong> « AuditMission360 ne rend pas l’opinion d’audit. Il aide l’équipe à relier risque, procédure, preuve, revue et constat afin que la décision reste documentée et attribuée au professionnel qui l’a prise. »</div>
+  </section>
+
+  <section id="architecture">
+    <h2>7. Architecture et données du prototype</h2>
+    <p>Vous pouvez conserver les choix techniques déjà éprouvés dans BrokerControl360 : React/TypeScript, FastAPI, Dexie/IndexedDB pour une démo locale, opérations stateless et exports. Le domaine se prête particulièrement à la séparation des données sources, des transformations, des jugements de l’auditeur et des révisions.</p>
+    <table>
+      <thead><tr><th>Couche</th><th>Démo portfolio</th><th>Évolution en contexte client</th></tr></thead>
+      <tbody>
+        <tr><td>Interface</td><td>React + TypeScript ; français par défaut, termes audit expliqués, rôles de démonstration et états vides.</td><td>Design system de cabinet, anglais si requis, accessibilité, tests sur connexions modestes.</td></tr>
+        <tr><td>API / règles</td><td>FastAPI pour valider imports, formats, règles d’analyse reproductibles et exports.</td><td>Services d’identité/SSO, intégration contrôlée aux systèmes comptables et gestion des tâches asynchrones.</td></tr>
+        <tr><td>Données métier</td><td>IndexedDB pour une présentation hors ligne ; fixtures synthétiques réinitialisables.</td><td>Base multi-tenant isolée ou déploiement dédié, permissions par mission/client et sauvegardes testées.</td></tr>
+        <tr><td>Pièces</td><td>Pièces PDF/CSV générées ; antivirus non nécessaire pour les fixtures créées localement.</td><td>Chiffrement, scan malware, journal d’accès, contrôles d’export et conservation définie contractuellement.</td></tr>
+        <tr><td>Import/analytics</td><td>CSV avec mapping explicite, normalisation en mémoire, statistiques d’exécution et export des exceptions.</td><td>Connecteurs approuvés, volumes importants, répétabilité, gestion des changements de schéma et journal des imports.</td></tr>
+        <tr><td>Journal de mission</td><td>Événements append-only de démonstration pour les actions essentielles ; corrections ajoutées sans effacer l’historique.</td><td>Contrôles d’intégrité, horodatage maîtrisé, accès d’administration surveillé et politique de conservation.</td></tr>
+      </tbody>
+    </table>
+    <h3>Jeu de données synthétiques conseillé</h3>
+    <ul>
+      <li>Entreprise fictive avec plan de comptes étiqueté « exemple », balance, grand livre, auxiliaires clients/fournisseurs et relevé bancaire de test.</li>
+      <li>Population de transactions assez grande pour un échantillonnage, avec erreurs injectées et documentées dans une fiche de correction.</li>
+      <li>Scénarios contrastés : doublon apparent qui n’est pas une anomalie après examen, écriture avec pièce manquante, facture post-clôture, rapprochement sans écart, point de revue non résolu.</li>
+      <li>Pour la démo bancaire : clients inventés, contrats de prêts synthétiques, calendriers de remboursement, statuts, sûretés factices et provisions « illustratives ».</li>
+      <li>Marquer toutes les données et règles comme fictives ; afficher la provenance à proximité des graphiques, des exports et des calculs.</li>
+    </ul>
+    <div class="callout gold"><strong>Échantillonnage et règles.</strong> Une démonstration peut montrer un tirage reproductible et une règle de validation paramétrable. Éviter d’appeler cela un échantillonnage représentatif universel ou un calcul réglementaire définitif : la population, le risque, la matérialité et la méthode sont des décisions de mission à valider par l’auditeur.</div>
+  </section>
+
+  <section id="plan">
+    <h2>8. Feuille de route proposée</h2>
+    <p>Estimation indicative pour un développeur solo à temps plein, avec reprise de composants du projet actuel. Elle concerne un démonstrateur et son contenu de présentation ; un déploiement de cabinet nécessiterait des travaux supplémentaires de sécurité, de gouvernance et d’intégration.</p>
+    <div class="phase"><time>Jours 1–3</time><div><strong>Recherche et modèle métier.</strong> Choisir une mission type (audit contractuel de PME, ou audit interne d’un établissement financier), l’utilisateur principal, les cycles et les statuts. Vérifier le vocabulaire auprès d’un praticien.</div></div>
+    <div class="phase"><time>Jours 4–6</time><div><strong>Prototype UX.</strong> Concevoir cockpit de mission, matrice risques/contrôles, fiche de test, viewer des pièces, notes de revue et registre de constats.</div></div>
+    <div class="phase"><time>Semaine 2</time><div><strong>Workflow métier.</strong> Implémenter mission, rôles, procédures, preuves, revue à deux niveaux, historique et dataset réinitialisable.</div></div>
+    <div class="phase"><time>Semaine 3</time><div><strong>Analyse de données.</strong> Import CSV, mapping, contrôle des totaux, 5–8 tests explicables et export d’exceptions avec références de ligne.</div></div>
+    <div class="phase"><time>Semaine 4</time><div><strong>Portfolio publiable.</strong> Tester accessibilité et mobile, créer vidéo, captures, note produit, diagramme des données, page des limites et rapport imprimable.</div></div>
+    <h3>Ordre des démonstrateurs suivants</h3>
+    <table>
+      <thead><tr><th>Projet suivant</th><th>Réutilise</th><th>Apport dans le portfolio</th></tr></thead>
+      <tbody>
+        <tr><td>AuditData360</td><td>Import CSV, mapping, exceptions, preuves et exports.</td><td>Met en avant les compétences Python/data engineering et analytics au service des auditeurs.</td></tr>
+        <tr><td>CloseControl360</td><td>Rapprochements, workflows, tâches, périodes et justificatifs.</td><td>Cible à la fois les directions financières et les cabinets.</td></tr>
+        <tr><td>CreditAudit CEMAC</td><td>Échantillonnage, pièces, règles paramétrables, risques et piste d’audit.</td><td>Montre la connaissance de la banque/microfinance et des contextes COBAC.</td></tr>
+        <tr><td>ControlFollow360</td><td>Constats, rôles, plans d’action et notifications.</td><td>Produit transversal qui s’adresse à l’audit interne et aux comités d’audit.</td></tr>
+        <tr><td>PublicSpend Audit / MarketAudit</td><td>Calendriers, référentiels configurables, documents et preuves.</td><td>Ouvre des exemples publics ou marché financier après validation des exigences sectorielles.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="cibles">
+    <h2>9. Cibles et présentation du portfolio</h2>
+    <h3>Profils à contacter</h3>
+    <table>
+      <thead><tr><th>Interlocuteur</th><th>Démo recommandée</th><th>Question de découverte</th></tr></thead>
+      <tbody>
+        <tr><td>Associé / directeur de mission en cabinet</td><td>AuditMission360, revue et statut des pièces.</td><td>Comment reliez-vous actuellement le programme de travail, les preuves et les notes de revue ?</td></tr>
+        <tr><td>Responsable audit interne / inspection</td><td>ControlFollow360, recommandations et retards.</td><td>Comment vérifiez-vous indépendamment qu’une recommandation est réellement mise en œuvre ?</td></tr>
+        <tr><td>Équipe audit bancaire / risk assurance</td><td>CreditAudit CEMAC et tests d’échantillon.</td><td>Quelles extractions sont nécessaires pour tester le portefeuille de crédit et ses justificatifs ?</td></tr>
+        <tr><td>Direction financière / chef comptable</td><td>CloseControl360, rapprochements et clôture.</td><td>Quels comptes ou rapprochements génèrent le plus d’écarts non résolus en fin de période ?</td></tr>
+        <tr><td>DSI / data office / sécurité</td><td>AuditData360, import/export, séparation et audit trail.</td><td>Quelles règles encadrent les exports de données financières et les pièces de mission ?</td></tr>
+        <tr><td>Comité d’audit / secrétariat général</td><td>Tableau des risques, points ouverts et plans d’action.</td><td>Quelle synthèse vous permet de challenger l’avancement sans accéder aux détails confidentiels du dossier ?</td></tr>
+      </tbody>
+    </table>
+    <p>Les équipes de cabinets locaux ou régionaux peuvent être approchées à partir des annuaires d’ordres professionnels et des listes publiques sectorielles. Pour les missions liées au marché financier, consulter la liste à jour des commissaires aux comptes agréés par la COSUMAF. Des noms tels qu’EXCO CACOGES, KPMG Afrique Centrale, BDO Audit, EY Gabon/Congo et plusieurs cabinets locaux figurent dans des listes et rapports publiés par la COSUMAF ; vérifier l’agrément actif, le pays, le périmètre de mission et les coordonnées avant de personnaliser un cas ou de prendre contact.</p>
+    <h3>Pitch de 30 secondes</h3>
+    <div class="callout"><strong>« Je développe des outils de pilotage pour les équipes financières et de contrôle. Après BrokerControl360, j’ai créé AuditMission360 : une démonstration qui relie risque, programme d’audit, échantillon, preuve, note de revue et constat. Les données sont fictives et l’outil ne formule pas d’opinion ; je cherche à confronter le workflow aux pratiques d’un cabinet ou d’une équipe d’audit interne. »</strong></div>
+    <h3>Contenu de portfolio à joindre</h3>
+    <ul>
+      <li>Une démo web avec données de test et remise à zéro en un clic.</li>
+      <li>Une vidéo courte du parcours complet ; éviter une visite de menus sans cas métier.</li>
+      <li>Un échantillon du dossier de travail exporté, avec pièces synthétiques et index de provenance.</li>
+      <li>Une note qui explique les choix de données, les contrôles réalisés, les limites et les hypothèses réglementaires.</li>
+      <li>Des versions de vue préparateur, réviseur et responsable de mission pour mettre en valeur séparation et supervision.</li>
+      <li>Un cas d’analyse comptable compréhensible avec tests, résultats faux positifs et résolution humaine.</li>
+    </ul>
+  </section>
+
+  <section id="garde-fous">
+    <h2>10. Garde-fous réglementaires et éthiques</h2>
+    <div class="callout gold"><strong>Ce document est un cadrage produit, pas un avis juridique, comptable ou d’audit.</strong> La mission statutaire, l’agrément, l’indépendance, le référentiel et les obligations de communication doivent être vérifiés par un professionnel habilité dans le pays et le secteur concernés.</div>
+    <table>
+      <thead><tr><th>Risque / exigence</th><th>Garde-fou dans le portfolio</th><th>Cadre à valider</th></tr></thead>
+      <tbody>
+        <tr><td>Confusion avec une mission d’audit réelle</td><td>Marquer partout « démonstrateur », afficher « opinion simulée » uniquement sur données d’exemple ; ne pas utiliser de vrai logo/client sans autorisation.</td><td>AUSCGIE, AUDCIF, cadre professionnel et règles locales d’exercice.</td></tr>
+        <tr><td>Référentiel de comptes inadapté</td><td>Paramétrer pays, catégorie d’entité, secteur, référentiel et période ; montrer qui valide le mapping et la version appliquée.</td><td>AUDCIF/SYSCOHADA, IFRS le cas échéant, règles sectorielles COBAC, CIMA, COSUMAF/CIPRES.</td></tr>
+        <tr><td>Indépendance / incompatibilité de missions</td><td>Ne pas fournir de moteur qui se présente comme préparant et certifiant lui-même les comptes ; inclure un registre de conflits/acceptation en option seulement après revue professionnelle.</td><td>Règlement professionnel OHADA, AUSCGIE et règles sectorielles d’agrément.</td></tr>
+        <tr><td>Décision automatisée sur fraude ou opinion</td><td>Les règles de données signalent des pistes et conservent les résultats ; conclusions, matérialité, suffisance des éléments et opinion sont des jugements humains.</td><td>Normes ISA et procédures qualité du cabinet.</td></tr>
+        <tr><td>Confidentialité des pièces et données clients</td><td>Aucune donnée réelle dans l’hébergement portfolio ; réduire champs, restreindre téléchargements et rendre les exports synthétiques.</td><td>Secret professionnel, obligations locales de confidentialité et protection des données de chaque État.</td></tr>
+        <tr><td>Règles bancaires/prudentielles vieillissantes</td><td>Versionner chaque checklist ; afficher date/source et état « à confirmer » ; éviter les seuils codés en dur.</td><td>Textes COBAC/BEAC courants, instructions et règles propres au type d’établissement.</td></tr>
+        <tr><td>Droit d’accès et conservation des preuves</td><td>Journaliser accès et changements, minimiser les copies, prévoir politique de conservation configurable et procédure d’export sécurisé.</td><td>Contrat de mission, politique de cabinet, textes nationaux et éventuelles exigences de supervision.</td></tr>
+      </tbody>
+    </table>
+    <p>OHADA indique que le Règlement n° 01/2017 harmonise normes, code d’éthique et système d’assurance qualité des professionnels dans les États parties, avec entrée en vigueur au 1er janvier 2018. Pour les établissements de crédit, la COBAC publie en plus des textes ciblés sur les diligences des commissaires aux comptes, l’organisation comptable, le contrôle interne, le provisionnement et les risques. Le cadre produit doit traiter ces couches comme des exigences liées à l’entité et à la mission, pas comme une checklist universelle.</p>
+  </section>
+
+  <section id="sources">
+    <h2>11. Sources et références</h2>
+    <p>Les sources institutionnelles sont privilégiées. Les statistiques citées sont rattachées à l’exercice indiqué ; les pages de régulateurs sont à consulter de nouveau avant toute intégration fonctionnelle.</p>
+    <ol class="sources">
+      <li><strong>OHADA — Acte uniforme relatif au droit comptable et à l’information financière (AUDCIF).</strong> Présentation institutionnelle, portée et dates d’entrée en vigueur SYSCOHADA/IFRS : <a href="https://www.ohada.org/acte-uniforme-relatif-au-droit-comptable-et-a-linformation-financiere-audcif/">page officielle OHADA</a>.</li>
+      <li><strong>OHADA — Règlement portant harmonisation des pratiques des professionnels de la comptabilité et de l’audit (n° 01/2017/CM/OHADA).</strong> <a href="https://www.ohada.org/mise-en-ligne-du-reglement-portant-harmonisation-des-pratiques-des-professionnels-de-la-comptabilite-et-de-l-audit-dans-les-etats-membres-de-l-ohada/">Présentation et téléchargement institutionnels</a>.</li>
+      <li><strong>OHADA — Guide pratique d’application des normes professionnelles.</strong> Présentation des normes ISA, documentation, risques, éléments probants, revue et communications : <a href="https://www.ohada.org/wp-content/uploads/2020/10/OHADA-Guide-pratique-dapplication-des-normes-professionnelles-Support-de-Pre%CC%81sentation.pdf">document PDF</a>.</li>
+      <li><strong>BEAC / COBAC — Rapport annuel 2024.</strong> Données du secteur bancaire et de la microfinance, supervision et risques : <a href="https://www.beac.int/wp-content/uploads/2016/10/Rapport-annuel-de-la-COBAC-2024-PDF-14.8-Mo_compressed-1.pdf">rapport COBAC 2024 (PDF)</a>.</li>
+      <li><strong>BEAC — Règlements de la COBAC.</strong> Registre officiel donnant accès notamment au règlement sur les diligences des commissaires aux comptes des établissements de crédit, aux règles de comptabilité bancaire, de contrôle interne et de provisionnement : <a href="https://www.beac.int/supervision-bancaire/reglements-de-cobac/">page réglementaire BEAC</a>.</li>
+      <li><strong>BEAC — Diligences réglementaires des commissaires aux comptes dans les établissements de crédit dans la CEMAC.</strong> <a href="https://www.beac.int/wp-content/uploads/2016/10/Dilcomcomptes_CEMAC.pdf">Document PDF</a> ; ressource de synthèse à compléter par les textes en vigueur.</li>
+      <li><strong>COSUMAF — Rapport annuel 2024.</strong> Informations sur les textes du marché financier et les agréments, dont commissaires aux comptes : <a href="https://cosumaf.org/files/documents/01KHB46DA10331VPWZ5EEB8SGE.pdf">rapport publié par la COSUMAF (PDF)</a>.</li>
+      <li><strong>COSUMAF — Commissaires aux comptes.</strong> <a href="https://cosumaf.org/commissaires-aux-comptes/">Page institutionnelle des agréments et listes</a> ; toujours vérifier la version courante avant de s’y fier.</li>
+      <li><strong>COSUMAF — textes réglementaires et instructions.</strong> <a href="https://cosumaf.org/textes-reglementaires-instructions/">Page officielle</a> ; règlements, instructions et périmètres d’application.</li>
+      <li><strong>Banque mondiale — CEMAC Economic Barometer, Spring 2025.</strong> Contexte économique, finances publiques, croissance et réformes : <a href="https://www.worldbank.org/en/region/afr/publication/economic-barometer-for-the-central-african-economic-and-monetary-community-spring-2025">publication régionale</a>.</li>
+      <li><strong>BrokerControl360 — démonstrateur existant.</strong> <a href="https://brokercontrol360.vercel.app/">Application portfolio</a> ; le README et la spécification du dépôt local décrivent son périmètre, ses données simulées, ses rôles et ses contrôles.</li>
+    </ol>
+    <div class="callout"><strong>Limites de l’étude.</strong> Le rapport présente des pistes produits générales dans six pays et plusieurs secteurs réglementés. Il ne détaille pas les seuils nationaux de commissariat aux comptes, les mandats disponibles, les exigences d’agrément de chaque juridiction, ni les évolutions de textes postérieures aux sources citées. Ces éléments sont à vérifier avant un développement métier poussé ou une prospection nominative.</div>
+  </section>
+
+  <footer>
+    <strong>Conclusion.</strong> Construire d’abord une mission d’audit de bout en bout, avec des données transparentes et des validations humaines. Ensuite, spécialiser les outils analytiques sur deux douleurs fortes et compréhensibles : qualité des portefeuilles de crédit/garanties et rapprochements de clôture. Ce fil directeur complète BrokerControl360 : même exigence de contrôle, mais appliquée à la production et à la vérification de l’information financière.<br><br>
+    Document de cadrage pour démonstrateurs · rédigé le 29 septembre 2026 · pas un avis juridique, comptable ou d’audit.
+  </footer>
+</main>
+</body>
+</html>

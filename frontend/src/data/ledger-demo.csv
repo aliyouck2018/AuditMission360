@@ -1,0 +1,7 @@
+date_ecriture;date_saisie;numero_piece;compte;libelle;debit;credit
+2025-12-29;2025-12-29;JRN-25-0001;512000;Virement client fictif;1200000;0
+2025-12-29;2025-12-29;JRN-25-0002;701000;Vente fictive;0;1200000
+2025-12-29;2025-12-30;JRN-25-0003;512000;Virement client fictif;1200000;0
+2025-12-29;2025-12-30;JRN-25-0004;701000;Vente fictive;0;1200000
+2025-12-31;2026-01-05;JRN-25-0007;471000;Compte transitoire fictif;25000;0
+2025-12-31;2026-01-05;JRN-25-0008;758000;Produit divers fictif;0;25000

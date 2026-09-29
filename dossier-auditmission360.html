@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dossier produit et technique de conception d’AuditMission360, plateforme de pilotage et de documentation des missions d’audit financier en zone CEMAC et OHADA.">
+  <title>AuditMission360 — Dossier produit & architecture</title>
+  <style>
+    @page { size:A4; margin:14mm 13mm; }
+    :root { --ink:#1d2b36; --navy:#102f46; --blue:#176f99; --teal:#148477; --pale:#eef6f7; --line:#d4e0e5; --muted:#5b6d78; --gold:#b98726; --red:#a54d42; --green:#27704e; --white:#fff; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:#f1f5f7; font:15px/1.62 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif; }
+    a { color:#126b91; text-decoration-thickness:1px; text-underline-offset:3px; overflow-wrap:anywhere; }
+    a:hover { color:#0b455f; }
+    .sheet { max-width:1160px; margin:26px auto; padding:54px 66px 64px; background:var(--white); box-shadow:0 14px 48px #12324a12; }
+    .cover { min-height:700px; display:flex; flex-direction:column; justify-content:center; padding:16px 0 50px; border-bottom:1px solid var(--line); }
+    .eyebrow { color:var(--teal); text-transform:uppercase; letter-spacing:.16em; font-size:12px; font-weight:850; }
+    h1 { max-width:900px; margin:22px 0 15px; color:var(--navy); font-size:clamp(42px,6vw,70px); line-height:1.02; letter-spacing:-.05em; }
+    .subtitle { max-width:820px; color:var(--muted); font-size:21px; line-height:1.46; }
+    .cover-mark { width:82px; height:6px; margin:21px 0; border-radius:9px; background:linear-gradient(90deg,var(--teal) 0 66%,var(--gold) 66%); }
+    .meta { display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:23px; color:var(--muted); font-size:13px; }
+    .cover-note,.callout { margin:18px 0; padding:17px 20px; border:1px solid #cde4e2; border-left:5px solid var(--teal); border-radius:10px; background:#eff8f7; }
+    .cover-note { max-width:900px; margin-top:39px; padding:21px 24px; border-left-width:1px; border-radius:14px; }
+    .callout.gold { background:#fff8e9; border-color:var(--gold); }
+    .callout.red { background:#fff2ef; border-color:var(--red); }
+    .callout.dark { color:#edf5f8; background:var(--navy); border:0; }
+    .callout.dark strong { color:#fff; }
+    h2 { margin:51px 0 15px; color:var(--navy); font-size:28px; line-height:1.2; letter-spacing:-.025em; scroll-margin-top:20px; }
+    h3 { margin:21px 0 8px; color:var(--navy); font-size:19px; line-height:1.3; }
+    h4 { margin:15px 0 6px; color:var(--blue); font-size:14px; }
+    p { margin:7px 0 12px; }
+    .lede { max-width:920px; color:#465967; font-size:17px; }
+    .toc { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 24px; padding:22px 25px; border:1px solid var(--line); border-radius:14px; background:#fbfcfd; }
+    .toc a { text-decoration:none; font-weight:650; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .card { padding:18px; border:1px solid var(--line); border-radius:13px; background:#fff; break-inside:avoid; }
+    .card.tint { background:#f7fbfc; }
+    .card p:last-child,.card ul:last-child { margin-bottom:0; }
+    .badge { display:inline-block; margin-bottom:8px; padding:3px 9px; border-radius:99px; color:#155d75; background:#e8f4f6; font-size:10px; font-weight:850; letter-spacing:.06em; text-transform:uppercase; }
+    .badge.gold { color:#765911; background:#fff2d1; }
+    .badge.green { color:#1b674e; background:#e7f5ed; }
+    .badge.red { color:#8a443a; background:#ffebe7; }
+    ul,ol { margin:7px 0 13px; padding-left:22px; }
+    li { margin:4px 0; }
+    .stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:11px; margin:22px 0; }
+    .stat { min-height:108px; padding:16px; border-radius:12px; color:#fff; background:var(--navy); }
+    .stat strong { display:block; color:#fff; font-size:20px; line-height:1.2; }
+    .stat span { display:block; margin-top:7px; color:#c6d8e2; font-size:12px; line-height:1.4; }
+    table { width:100%; margin:13px 0 21px; border-collapse:collapse; font-size:12.5px; }
+    th { padding:10px; color:#fff; background:var(--navy); text-align:left; }
+    td { padding:9px 10px; border:1px solid var(--line); vertical-align:top; }
+    tbody tr:nth-child(even) { background:#f7fafb; }
+    .small,.muted { color:var(--muted); }
+    .small { font-size:12px; }
+    .pill { display:inline-block; margin:2px 3px 2px 0; padding:3px 8px; border-radius:20px; color:#425363; background:#eef2f5; font-size:10.5px; }
+    .workflow { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; padding:0; list-style:none; counter-reset:step; }
+    .workflow li { margin:0; padding:14px; border:1px solid var(--line); border-radius:10px; background:#fbfcfd; counter-increment:step; break-inside:avoid; }
+    .workflow li::before { display:block; margin-bottom:6px; color:var(--teal); font-size:12px; font-weight:900; content:counter(step,decimal-leading-zero); }
+    .phase { display:grid; grid-template-columns:118px 1fr; gap:14px; margin-left:10px; padding:0 0 18px 20px; border-left:2px solid #b6dadd; break-inside:avoid; }
+    .phase time { color:var(--teal); font-weight:850; }
+    .diagram { overflow-x:auto; margin:16px 0; padding:18px; border:1px solid var(--line); border-radius:14px; background:#f8fbfc; }
+    .diagram svg { display:block; width:100%; min-width:700px; height:auto; }
+    .norm { font-weight:800; color:var(--blue); }
+    .status { white-space:nowrap; font-weight:750; }
+    .footer { margin-top:50px; padding-top:17px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+    .print-button { position:fixed; right:20px; bottom:20px; z-index:2; padding:12px 17px; border:0; border-radius:99px; color:white; background:var(--navy); font:inherit; font-weight:750; box-shadow:0 8px 22px #12324a30; cursor:pointer; }
+    @media(max-width:820px) { .sheet { margin:0; padding:35px 25px 45px; } .grid.three { grid-template-columns:repeat(2,minmax(0,1fr)); } .stats { grid-template-columns:repeat(2,minmax(0,1fr)); } .workflow { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:560px) { body { font-size:14px; } .sheet { padding:25px 17px 38px; } .cover { min-height:570px; } .subtitle { font-size:18px; } h2 { font-size:24px; } .grid,.grid.three,.toc { grid-template-columns:1fr; } .phase { grid-template-columns:1fr; gap:2px; } table { font-size:11px; } th,td { padding:7px; } .print-button { right:11px; bottom:11px; } }
+    @media print { body { background:#fff; font-size:10.5pt; } .sheet { max-width:none; margin:0; padding:0; box-shadow:none; } .cover { min-height:255mm; page-break-after:always; } .print-button { display:none; } h2 { page-break-after:avoid; } .card,.stat,.callout,table,.workflow li,.diagram { break-inside:avoid; } a { color:inherit; } a[href^="http"]::after { color:#52636f; font-size:8pt; content:" (" attr(href) ")"; } .toc a::after { content:none; } }
+  </style>
+</head>
+<body>
+<button class="print-button" onclick="window.print()" aria-label="Imprimer ou enregistrer ce dossier en PDF">Imprimer / PDF</button>
+<main class="sheet">
+  <header class="cover">
+    <div class="eyebrow">Dossier produit & technique · CEMAC / OHADA · 29 septembre 2026</div>
+    <div class="cover-mark"></div>
+    <h1>AuditMission360</h1>
+    <p class="subtitle">Concevoir un espace de mission d’audit financier qui rend visibles les liens entre risques, assertions, procédures, éléments probants, revues et conclusions.</p>
+    <div class="meta">
+      <span><strong>Format</strong> · démonstrateur portfolio évolutif</span>
+      <span><strong>Zone de départ</strong> · six pays CEMAC, espace OHADA</span>
+      <span><strong>Produit de référence</strong> · BrokerControl360</span>
+      <span><strong>État</strong> · cadrage fonctionnel, pas encore une application certifiante</span>
+    </div>
+    <div class="cover-note"><strong>Proposition de valeur.</strong> Une mission ne se résume pas à cocher des cases. AuditMission360 aide l’équipe à conserver une chaîne de justification lisible — du risque à la conclusion — avec responsabilités et historique. L’application organise et documente le travail ; les décisions d’audit et l’opinion restent celles des professionnels habilités.</div>
+    <div class="callout dark"><strong>Recommandation de réalisation.</strong> Commencer par une mission pédagogique d’audit financier d’une PME fictive, utilisant SYSCOHADA à titre de démonstration. Prévoir un modèle extensible par secteur, sans prétendre couvrir dès le MVP les obligations prudentielles bancaires, d’assurance ou du marché financier.</div>
+  </header>
+
+  <section id="sommaire">
+    <h2>Sommaire</h2>
+    <nav class="toc" aria-label="Sommaire du dossier">
+      <a href="#synthese">1. Synthèse exécutive</a><a href="#vision">2. Vision, problème et proposition</a>
+      <a href="#cible">3. Cibles et utilisateurs</a><a href="#besoins">4. Besoins fonctionnels</a>
+      <a href="#workflow">5. Workflow de mission et normes</a><a href="#page-methodologie">5 bis. Page Méthodologie et liens normatifs</a>
+      <a href="#normes">6. Cartographie des normes</a>
+      <a href="#architecture">7. Architecture applicative</a><a href="#donnees">8. Modèle de données</a>
+      <a href="#securite">9. Sécurité, confidentialité et qualité</a><a href="#experience">10. UX et indicateurs</a>
+      <a href="#mvp">11. MVP et critères d’acceptation</a><a href="#roadmap">12. Feuille de route</a>
+      <a href="#demo">13. Scénario de démo portfolio</a><a href="#risques">14. Risques et décisions à valider</a>
+      <a href="#sources">15. Sources et liens de référence</a>
+    </nav>
+
+    <h2 id="synthese">1. Synthèse exécutive</h2>
+    <p class="lede">Le rapport « Des outils numériques utiles à l’audit financier en zone CEMAC » identifie AuditMission360 comme meilleur projet d’entrée : c’est un prolongement cohérent de BrokerControl360 et un démonstrateur immédiatement compréhensible par un cabinet, une équipe d’audit interne ou un recruteur produit/tech.</p>
+    <div class="stats">
+      <div class="stat"><strong>Un dossier</strong><span>Mission, cycles, risques, travaux, preuves et conclusion reliés</span></div>
+      <div class="stat"><strong>Trois lignes</strong><span>Audit externe, audit interne et expertise données avec droits distincts</span></div>
+      <div class="stat"><strong>Traçabilité</strong><span>Qui a préparé, revu, modifié ou approuvé chaque étape</span></div>
+      <div class="stat"><strong>Décision humaine</strong><span>Pas d’opinion automatique, de diagnostic de fraude ou de certification par le logiciel</span></div>
+    </div>
+    <div class="grid three">
+      <article class="card"><span class="badge gold">Produit</span><h3>Un cockpit de mission</h3><p>Une source de vérité structurée, centrée sur le dossier de travail et son cycle de revue.</p></article>
+      <article class="card"><span class="badge">Méthode</span><h3>Une piste démontrable</h3><p>Chaque test remonte à un objectif, un risque, une assertion, une population et des références de preuve.</p></article>
+      <article class="card"><span class="badge green">Portfolio</span><h3>Un cas métier maîtrisé</h3><p>Données synthétiques, parcours multi-rôles, import grand livre, exceptions explicables et export imprimable.</p></article>
+    </div>
+    <div class="callout gold"><strong>Ordre de priorité.</strong> Construire d’abord la chaîne « risque → procédure → preuve → revue → conclusion ». L’import analytique de grand livre enrichit cette histoire, mais ne doit pas masquer le produit central : la qualité de documentation et de supervision de la mission.</div>
+  </section>
+
+  <section id="vision">
+    <h2>2. Vision, problème et proposition de valeur</h2>
+    <h3>Problème utilisateur</h3>
+    <p>Dans une mission, les informations de planification, les feuilles de travail, les justificatifs, les échanges avec le client, les commentaires de revue et les constats peuvent se retrouver dispersés entre tableurs, courriels, dossiers partagés et fichiers locaux. Il devient difficile de répondre rapidement à cinq questions : pourquoi ce travail a-t-il été fait, sur quelle population, quelle preuve a été examinée, qui a revu le résultat, et comment cette conclusion a-t-elle été retenue ?</p>
+    <h3>Promesse produit</h3>
+    <div class="callout dark"><strong>« Donner à l’équipe une vue continue et explicable du dossier de mission, de la planification à la clôture, sans remplacer le jugement professionnel. »</strong></div>
+    <div class="grid">
+      <article class="card tint"><h3>Valeur pour les équipes</h3><ul><li>Repérer les preuves manquantes et points de revue ouverts.</li><li>Réduire le temps de recherche et de consolidation du statut.</li><li>Relier les anomalies à leur source et à leur traitement.</li><li>Réutiliser des programmes de travail sous contrôle de version.</li></ul></article>
+      <article class="card tint"><h3>Différenciation CEMAC / OHADA</h3><ul><li>Contexte pays, secteur et référentiel visibles dans le dossier.</li><li>Distinction SYSCOHADA général / règles sectorielles / IFRS le cas échéant.</li><li>Français par défaut, vocabulaire et règles explicites et configurables.</li><li>Approche réaliste pour des données tabulaires et des connexions modestes.</li></ul></article>
+    </div>
+    <h3>Frontière du produit</h3>
+    <table><thead><tr><th>AuditMission360 peut</th><th>AuditMission360 ne doit pas prétendre</th></tr></thead><tbody>
+      <tr><td>Structurer une mission, attribuer les travaux, conserver références et historiques, signaler des éléments à examiner et produire un dossier de démonstration.</td><td>Émettre une opinion légale, certifier des états financiers, décider qu’une fraude a été commise ou garantir à lui seul la conformité à une norme.</td></tr>
+      <tr><td>Proposer des checklists versionnées et des analyses explicables à valider par un professionnel.</td><td>Appliquer une checklist universelle à toutes les entités ou remplacer la lecture des textes, la matérialité et l’évaluation des preuves.</td></tr>
+    </tbody></table>
+  </section>
+
+  <section id="cible">
+    <h2>3. Cibles et utilisateurs</h2>
+    <p class="lede">Le premier acheteur/usager à viser pour le portfolio est le manager de mission en cabinet ou le responsable d’audit interne. Il ressent directement les frictions de coordination, de revue et de clôture, et peut juger la pertinence du workflow.</p>
+    <table><thead><tr><th>Persona</th><th>Objectif / douleur</th><th>Fonctionnalités clés</th><th>Priorité</th></tr></thead><tbody>
+      <tr><td><strong>Manager / superviseur</strong></td><td>Suivre l’avancement, répartir la charge et sécuriser la revue.</td><td>Cockpit, affectation, échéances, notes de revue, blocages.</td><td>Primaire</td></tr>
+      <tr><td><strong>Auditeur préparateur</strong></td><td>Exécuter son programme et documenter sans perdre le contexte.</td><td>Tests assignés, pièces, résultat, références et réponse aux revues.</td><td>Primaire</td></tr>
+      <tr><td><strong>Associé / directeur de mission</strong></td><td>Arbitrer les risques majeurs et apprécier les points de clôture.</td><td>Vue synthétique, risques élevés, exceptions et validations de jalon.</td><td>Primaire</td></tr>
+      <tr><td><strong>Client / interlocuteur audité</strong></td><td>Répondre aux demandes de documents et questions.</td><td>Portail de demandes à accès restreint, dépôt et commentaire.</td><td>Itération 2</td></tr>
+      <tr><td><strong>Auditeur interne / inspection</strong></td><td>Documenter tests de contrôle, constats et recommandations.</td><td>Programme, constats, causes, plans d’action et suivi de clôture.</td><td>Segment adjacent</td></tr>
+      <tr><td><strong>Expert données</strong></td><td>Importer et analyser des populations de façon reproductible.</td><td>Mapping, contrôles de qualité, règles et export d’exceptions.</td><td>Primaire démo</td></tr>
+      <tr><td><strong>Responsable qualité / inspection</strong></td><td>Examiner le dossier et retrouver la provenance sans le modifier.</td><td>Accès lecture, historique, statut des revues et index des preuves.</td><td>Itération 2</td></tr>
+    </tbody></table>
+    <p><strong>Marchés adressables en extension :</strong> cabinets d’expertise comptable et d’audit, directions d’audit interne, établissements financiers supervisés COBAC, assureurs CIMA, acteurs du marché financier COSUMAF et organismes publics/projets financés. Chaque extension sectorielle exige une validation métier et réglementaire spécifique.</p>
+  </section>
+
+  <section id="besoins">
+    <h2>4. Besoins fonctionnels</h2>
+    <h3>Capacités métier</h3>
+    <table><thead><tr><th>ID</th><th>Besoin</th><th>Comportement attendu dans le MVP</th><th>Priorité</th></tr></thead><tbody>
+      <tr><td>F-01</td><td>Créer une mission</td><td>Entité, pays, exercice, secteur, type de mission, équipe, période, référentiel et version configurés.</td><td>Must</td></tr>
+      <tr><td>F-02</td><td>Planifier les risques</td><td>Documenter processus/cycle, risque, assertion, contrôle attendu, réponse et responsable.</td><td>Must</td></tr>
+      <tr><td>F-03</td><td>Programmer les travaux</td><td>Créer des procédures à partir d’un modèle versionné ; permettre adaptation et justification.</td><td>Must</td></tr>
+      <tr><td>F-04</td><td>Définir population / échantillon</td><td>Conserver source, filtres, taille, méthode, paramètres et graine pour reproduire la sélection.</td><td>Must</td></tr>
+      <tr><td>F-05</td><td>Documenter l’exécution</td><td>Résultat, date, préparateur, références aux éléments examinés, conclusion et commentaire.</td><td>Must</td></tr>
+      <tr><td>F-06</td><td>Gérer exceptions et constats</td><td>Relier écart, impact/gravité indicative, réponse, pièce additionnelle, statut et recommandation.</td><td>Must</td></tr>
+      <tr><td>F-07</td><td>Organiser la revue</td><td>Notes ouvertes/résolues, réponse du préparateur, réviseur, date, caractère bloquant configurable.</td><td>Must</td></tr>
+      <tr><td>F-08</td><td>Importer le grand livre de démonstration</td><td>CSV, mapping contrôlé, aperçu, erreurs de schéma, totaux et lien vers lignes sources.</td><td>Should</td></tr>
+      <tr><td>F-09</td><td>Suivre les demandes documentaires</td><td>Demande, propriétaire, date attendue, pièces déposées et validation de réception.</td><td>Should</td></tr>
+      <tr><td>F-10</td><td>Clôturer et restituer</td><td>Liste des éléments ouverts, validation par rôle, index des preuves et rapport simulé exportable.</td><td>Must</td></tr>
+      <tr><td>F-11</td><td>Journaliser les actions</td><td>Historique horodaté, acteur, opération et objet ; correction sans effacement silencieux.</td><td>Must</td></tr>
+      <tr><td>F-12</td><td>Générer les feuilles de travail et courriers</td><td>Produire des documents préremplis depuis la mission, avec modèle/version, brouillon, revue et export PDF.</td><td>Must</td></tr>
+      <tr><td>F-13</td><td>Consulter la méthodologie</td><td>Page par phase d’audit avec objectif, actions, livrables, critères de passage et liens vers normes/référentiels applicables.</td><td>Must</td></tr>
+    </tbody></table>
+    <h3>Comment risques, assertions et procédures sont-ils proposés ?</h3>
+    <p>AuditMission360 ne « devine » pas le dossier d’audit. Il assemble des <strong>modèles de départ</strong> selon le contexte de la mission, puis fait confirmer et compléter les choix par l’équipe. Les sorties sont des propositions versionnées, pas une évaluation ou une conclusion automatique.</p>
+    <ol>
+      <li><strong>Contexte de mission :</strong> l’utilisateur choisit le type de mission, le secteur, le référentiel, la période et les cycles concernés. Le catalogue n’affiche que les modèles déclarés applicables à ce contexte, avec leur provenance et leur statut de validation.</li>
+      <li><strong>Compréhension :</strong> l’équipe répond à un questionnaire configurable sur activités, processus, systèmes, contrôles, changements, estimations, parties liées et événements particuliers. Les réponses donnent des suggestions de points à examiner ; elles ne constituent pas des faits vérifiés.</li>
+      <li><strong>Risques candidats :</strong> le système présente les risques types liés au cycle et aux facteurs déclarés, au niveau états financiers ou assertion. L’auditeur peut ajouter, reformuler, écarter ou relier un risque propre à l’entité, avec justification.</li>
+      <li><strong>Assertions :</strong> l’utilisateur sélectionne parmi les assertions pertinentes pour la catégorie d’opérations, solde ou information à fournir ; l’interface explique le sens de chaque assertion et pourquoi elle est proposée.</li>
+      <li><strong>Évaluation humaine :</strong> les professionnels renseignent leur analyse, les contrôles identifiés et leur appréciation du risque. Les niveaux « significatif », risque de fraude et matérialité sont des décisions documentées de mission, non des seuils calculés en secret par l’application.</li>
+      <li><strong>Procédures candidates :</strong> la matrice risque/assertion propose des tests de contrôles et/ou procédures substantielles issus de modèles. Le responsable sélectionne, adapte ou crée les travaux, puis enregistre nature, calendrier, étendue, population, responsable et objectif.</li>
+      <li><strong>Retour d’expérience :</strong> import, résultats et exceptions peuvent amener l’auditeur à réévaluer un risque ou ajouter des travaux ; l’outil conserve l’ancienne version, la modification, son auteur et le motif.</li>
+    </ol>
+    <table><thead><tr><th>Entrée</th><th>Ce que le moteur peut suggérer</th><th>Ce qu’il ne décide pas</th></tr></thead><tbody>
+      <tr><td>Secteur, pays, référentiel, exercice</td><td>Pack de cycles et modèles potentiellement applicables.</td><td>Que le référentiel ou une obligation sectorielle est légalement applicable sans validation.</td></tr>
+      <tr><td>Cycle / type de poste / assertions</td><td>Risques types et contrôles fréquemment pertinents.</td><td>Que ces risques existent chez l’entité ou sont exhaustifs.</td></tr>
+      <tr><td>Questionnaire de compréhension</td><td>Questions de suivi, facteurs de risque et procédures à envisager.</td><td>Une conclusion sur la conception ou l’efficacité d’un contrôle non testé.</td></tr>
+      <tr><td>Balance ou grand livre importé</td><td>Signaux analytiques descriptifs (écritures tardives, doublons possibles, comptes inhabituels) pouvant amener à reconsidérer un risque.</td><td>Fraude, anomalie significative, risque élevé ou opinion sans examen et jugement professionnel.</td></tr>
+      <tr><td>Bibliothèque de procédures</td><td>Modèles de test reliés à l’objectif, assertion et risque concernés.</td><td>Étendue, taille d’échantillon ou suffisance des éléments probants sans analyse documentée adaptée au dossier.</td></tr>
+    </tbody></table>
+    <h3>Catalogue de démarrage réaliste — périmètre MVP</h3>
+    <p>Le MVP devrait embarquer un <strong>catalogue initial utile mais volontairement borné</strong> pour une mission pédagogique de PME fictive (SYSCOHADA illustratif), pas un « catalogue complet » des risques de toutes les entités et normes. Objectif de démo : quatre cycles, assertions définies, environ 3 à 6 risques candidats et 3 à 5 procédures types par cycle, à titre indicatif et à valider par un praticien.</p>
+    <table><thead><tr><th>Cycle du MVP</th><th>Risques candidats de démonstration</th><th>Assertions à examiner selon l’objet</th><th>Exemples de procédures-modèles</th></tr></thead><tbody>
+      <tr><td>Ventes / créances clients</td><td>Ventes enregistrées sans livraison, cut-off incorrect, créances irrécouvrables sous-évaluées, avoirs postérieurs non rapprochés.</td><td>Réalité / occurrence, exhaustivité, exactitude, cut-off, évaluation, droits, présentation.</td><td>Rapprocher facture/commande/preuve de livraison ; tester cut-off avant/après clôture ; circulariser ou examiner encaissements ultérieurs ; recalculer balance âgée et provision selon règles du scénario.</td></tr>
+      <tr><td>Achats / fournisseurs</td><td>Dettes ou charges non enregistrées, réception non facturée omise, facture doublonnée, mauvaise période.</td><td>Exhaustivité, réalité, exactitude, cut-off, classification, obligations, présentation.</td><td>Recherche de passifs non comptabilisés ; rapprocher facture/bon de commande/réception ; tester séquence et cut-off ; revue des paiements postérieurs.</td></tr>
+      <tr><td>Trésorerie / banques</td><td>Rapprochement bancaire non fiable, opérations en suspens anciennes, restriction de disponibilité non présentée.</td><td>Existence, exhaustivité, exactitude/évaluation, cut-off, droits et obligations, présentation.</td><td>Recalculer un rapprochement ; rapprocher relevé/GL ; tester encaissements et décaissements autour de clôture ; demander une confirmation externe dans un scénario fictif.</td></tr>
+      <tr><td>Stocks / achats</td><td>Quantités inexactes, stock obsolète, valorisation incohérente, mouvements de fin de période mal enregistrés.</td><td>Existence, exhaustivité, droits, exactitude/évaluation, cut-off, classement et présentation.</td><td>Observer ou simuler l’inventaire ; rapprocher comptage/état/GL ; tester coût sur pièces ; analyser rotation et dépréciation ; tester mouvements autour de clôture.</td></tr>
+    </tbody></table>
+    <h4>Assertions de base dans le catalogue</h4>
+    <p><strong>Transactions et événements :</strong> réalité (occurrence), exhaustivité, exactitude, cut-off, classification. <strong>Soldes de comptes :</strong> existence, droits et obligations, exhaustivité, exactitude/évaluation/imputation. <strong>Présentation et informations fournies :</strong> occurrence/droits et obligations, exhaustivité, classification/compréhensibilité, exactitude/évaluation. Les libellés sont alignés sur le référentiel de normes retenu et peuvent varier selon l’édition/traduction.</p>
+    <div class="callout gold"><strong>Pourquoi pas un catalogue universel « complet » ?</strong> Les risques dépendent de l’entité, des systèmes, du secteur, du pays, du référentiel et des faits de la période. Un référentiel exhaustif n’existe pas sous la forme d’une liste stable de réponses prêtes à l’emploi ; un catalogue non maintenu crée un faux sentiment de couverture. AuditMission360 doit fournir un pack initial sélectionné, des modèles extensibles et une gouvernance de versions.</div>
+    <h3>Gouvernance du catalogue</h3>
+    <ul><li>Chaque item a un identifiant stable, type (risque/assertion/procédure/contrôle), cycle, contexte applicable, description et date/version.</li><li>Une procédure modèle précise objectif, prérequis, population visée, étapes possibles, éléments à documenter et références normatives indicatives.</li><li>Un auteur métier et un réviseur valident chaque version ; source normative, date de vérification et statut « brouillon / revu / approuvé / retiré » sont visibles.</li><li>Les modèles d’une mission sont copiés/versionnés dans son dossier au moment de l’utilisation ; une évolution ultérieure du catalogue ne réécrit pas le travail déjà exécuté.</li><li>Le client peut créer des modèles internes et packs sectoriels ; les modèles sont désactivés par défaut tant que leur applicabilité et leur revue ne sont pas établies.</li></ul>
+    <h3>Génération des feuilles de travail, lettres et autres documents</h3>
+    <p>Oui : les documents sont des objets du dossier, générés depuis les données de mission et non de simples fichiers PDF isolés. L’utilisateur choisit un modèle, vérifie les champs préremplis, complète les éléments propres au mandat, prévisualise, fait relire puis exporte en PDF.</p>
+    <table><thead><tr><th>Famille de document</th><th>Exemples de modèles</th><th>Moment du workflow</th><th>Garde-fou produit</th></tr></thead><tbody>
+      <tr><td>Acceptation et cadrage</td><td>Lettre de mission / lettre d’engagement, checklist d’acceptation, déclaration d’indépendance et conflits.</td><td>Avant lancement des travaux</td><td>Modèle adapté à la mission et au droit applicable ; approbation et signature demeurent professionnelles.</td></tr>
+      <tr><td>Planification</td><td>Mémo de planification, stratégie et calendrier, seuils de matérialité documentés, demandes initiales (PBC).</td><td>Planification</td><td>Tout seuil ou jugement est marqué comme proposition saisie/validée, avec auteur, date et devise.</td></tr>
+      <tr><td>Feuilles de travail</td><td>Compréhension d’un cycle, matrice risques/assertions, test de contrôle, test de détail, circularisation, rapprochement, analyse de grand livre, échantillonnage.</td><td>Compréhension et exécution</td><td>Le document reprend références de procédure, population et lignes sources ; les preuves restent liées et indexées.</td></tr>
+      <tr><td>Supervision et exceptions</td><td>Note de revue, réponse du préparateur, fiche d’anomalie, tableau récapitulatif des anomalies et suivi des corrections.</td><td>Revue et évaluation</td><td>Version générée conservée ; corrections ultérieures donnent une nouvelle version et une trace d’historique.</td></tr>
+      <tr><td>Clôture et communication</td><td>Mémo de clôture, lettre de recommandations / points de contrôle interne, projet de rapport, lettre d’affirmation de la direction.</td><td>Clôture et rapport</td><td>Ébauche clairement identifiée ; destinataire, texte normatif, signature et émission validés par une personne habilitée.</td></tr>
+      <tr><td>Portefeuille de mission</td><td>Index des pièces, liste des procédures, sommaire exécutif et état des demandes documentaires.</td><td>Toutes phases / archivage</td><td>Le PDF mentionne mission, période, date, version du modèle et caractère simulé pour le portfolio.</td></tr>
+    </tbody></table>
+    <div class="grid">
+      <article class="card tint"><h4>Parcours de génération</h4><ol><li>Choisir modèle et version applicables.</li><li>Préremplir depuis mission, risques, travaux et coordonnées autorisées.</li><li>Signaler les champs manquants ; l’utilisateur complète sans inventer automatiquement.</li><li>Prévisualiser et corriger en brouillon.</li><li>Soumettre à revue/approbation selon le type de document.</li><li>Exporter PDF, conserver version et journaliser l’export.</li></ol></article>
+      <article class="card tint"><h4>PDF : chemin de réalisation</h4><ul><li><strong>MVP :</strong> gabarit HTML/CSS imprimable, aperçu navigateur et bouton « Imprimer / Enregistrer en PDF » avec styles A4, pagination, en-tête et pied de page.</li><li><strong>Évolution :</strong> génération PDF serveur reproductible via moteur HTML→PDF (ex. Chromium/Playwright), si l’hébergement et les besoins le justifient.</li><li>Indexer les exports, identifier modèle/version, date de génération et données d’origine ; garder le lien entre PDF et document métier.</li></ul></article>
+    </div>
+    <div class="callout gold"><strong>Le logiciel peut générer le brouillon et la mise en forme, pas valider juridiquement la lettre.</strong> Lettre de mission, confirmations, lettre d’affirmation, recommandations et rapport doivent rester modifiables/revus et émis par les professionnels concernés. Pour le portfolio, employer des entités fictives et un filigrane « Démonstration — document simulé ».</div>
+    <h3>Exigences non fonctionnelles</h3>
+    <div class="grid three">
+      <article class="card"><h4>Sécurité</h4><p>Contrôle d’accès côté serveur en production, séparation des clients, liens de partage temporaires et exports protégés.</p></article>
+      <article class="card"><h4>Auditabilité</h4><p>Références immuables aux imports, versions de programme, traces d’exécution et historique de revue.</p></article>
+      <article class="card"><h4>Accessibilité</h4><p>Navigation clavier, contrastes, états explicites, tableaux lisibles sur mobile et libellés sans jargon opaque.</p></article>
+      <article class="card"><h4>Fiabilité</h4><p>Contrôles d’import déterministes, sauvegarde/restauration de démo et tests des transitions de statut.</p></article>
+      <article class="card"><h4>Performance</h4><p>Pagination des pièces et transactions, tâches asynchrones lorsque les imports deviennent volumineux.</p></article>
+      <article class="card"><h4>Portabilité</h4><p>Exports documentaires indexés et formats standards ; pas de dépendance à une feuille de calcul opaque.</p></article>
+    </div>
+  </section>
+
+  <section id="workflow">
+    <h2>5. Workflow de mission et normes applicables</h2>
+    <p class="lede">Workflow présenté comme une aide à la documentation. L’applicabilité des normes dépend du type de mission, de la juridiction, de l’entité et du référentiel ; le professionnel valide les exigences et la version en vigueur.</p>
+    <div class="diagram" role="img" aria-label="Chaîne de mission AuditMission360 allant de l’acceptation à la clôture, avec les normes de référence">
+      <svg viewBox="0 0 1060 210" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#148477"/></marker></defs>
+        <g font-family="Arial,sans-serif" text-anchor="middle">
+          <g fill="#fff" stroke="#b9d5dc" stroke-width="2">
+            <rect x="12" y="31" width="145" height="76" rx="12"/><rect x="190" y="31" width="145" height="76" rx="12"/><rect x="368" y="31" width="145" height="76" rx="12"/><rect x="546" y="31" width="145" height="76" rx="12"/><rect x="724" y="31" width="145" height="76" rx="12"/><rect x="902" y="31" width="145" height="76" rx="12"/>
+          </g>
+          <g stroke="#148477" stroke-width="3" marker-end="url(#arrow)"><path d="M159 69H184"/><path d="M337 69H362"/><path d="M515 69H540"/><path d="M693 69H718"/><path d="M871 69H896"/></g>
+          <g fill="#102f46" font-size="15" font-weight="700"><text x="84" y="62">Acceptation</text><text x="84" y="84">& planification</text><text x="262" y="62">Risques</text><text x="262" y="84">& assertions</text><text x="440" y="62">Procédures</text><text x="440" y="84">& populations</text><text x="618" y="62">Exécution</text><text x="618" y="84">& éléments probants</text><text x="796" y="62">Revue</text><text x="796" y="84">& résolution</text><text x="974" y="62">Conclusion</text><text x="974" y="84">& rapport</text></g>
+          <g fill="#5b6d78" font-size="12"><text x="84" y="146">ISA 220 / 300</text><text x="262" y="146">ISA 315 / 320</text><text x="440" y="146">ISA 330 / 530</text><text x="618" y="146">ISA 500 / 520</text><text x="796" y="146">ISA 230 / 450</text><text x="974" y="146">ISA 700 / 705</text></g>
+          <text x="530" y="190" fill="#148477" font-size="13" font-weight="700">Fil rouge : documentation, scepticisme professionnel, confidentialité et jugement humain</text>
+        </g>
+      </svg>
+    </div>
+    <table><thead><tr><th>Étape utilisateur</th><th>Actions et sorties produit</th><th>Références normatives indicatives</th><th>Contrôle dans l’application</th></tr></thead><tbody>
+      <tr><td><strong>1. Acceptation / maintien</strong></td><td>Créer dossier, préciser le mandat, l’indépendance, les compétences et les conditions préalables ; décider de poursuivre ou refuser en dehors de l’automatisation.</td><td><span class="norm">ISA 210</span> (termes de la mission), <span class="norm">ISA 220</span> (qualité au niveau de la mission), Code d’éthique et règles professionnelles OHADA.</td><td>Checklist versionnée, approbateur identifié, déclaration de conflit et décision motivée. Le système ne prononce pas l’éligibilité juridique.</td></tr>
+      <tr><td><strong>2. Planification</strong></td><td>Fixer période, calendrier, équipe, matérialité proposée et stratégie ; documenter les changements de périmètre.</td><td><span class="norm">ISA 300</span> (planification), <span class="norm">ISA 320</span> (matérialité), ISA 220.</td><td>Jalons, version et auteur ; matérialité marquée comme jugement à approuver, avec devise et base enregistrées.</td></tr>
+      <tr><td><strong>3. Compréhension / risques</strong></td><td>Cartographier entité, processus, contrôles et systèmes ; identifier risques d’anomalies significatives et assertions concernées.</td><td><span class="norm">ISA 315 (révisée)</span> (identification et évaluation des risques), <span class="norm">ISA 240</span> (fraude), <span class="norm">ISA 250</span> (textes légaux et réglementaires).</td><td>Risque lié à une source/entretien/processus, assertion choisie et réponse prévue ; aucun score algorithmique ne remplace l’évaluation.</td></tr>
+      <tr><td><strong>4. Conception des réponses</strong></td><td>Définir tests de contrôles et procédures substantives adaptées aux risques ; allouer responsable et échéance.</td><td><span class="norm">ISA 330</span> (réponses aux risques), ISA 265 (communication des déficiences), ISA 540 (estimations) selon le poste.</td><td>Chaque procédure est reliée à un risque/assertion ; ajustement du programme justifié et conservé dans l’historique.</td></tr>
+      <tr><td><strong>5. Population / échantillonnage</strong></td><td>Importer/identifier la population, vérifier son exhaustivité, choisir méthode et éléments à tester.</td><td><span class="norm">ISA 500</span> (éléments probants), <span class="norm">ISA 530</span> (échantillonnage), ISA 505 (confirmations externes) si utilisées.</td><td>Fichier source, filtre, taille, méthode et graine archivés ; l’échantillon n’est pas qualifié de représentatif sans validation.</td></tr>
+      <tr><td><strong>6. Exécution / preuve</strong></td><td>Exécuter procédure, relier pièces aux éléments testés, consigner résultats, exception et procédure complémentaire.</td><td><span class="norm">ISA 500</span>, ISA 501 (éléments probants spécifiques), ISA 520 (procédures analytiques), ISA 530.</td><td>Référence de pièce, provenance, résultat, auteur, horodatage et réponse aux exceptions. Une alerte analytique est une piste, pas une conclusion.</td></tr>
+      <tr><td><strong>7. Estimations et événements</strong></td><td>Documenter estimations comptables, événements postérieurs et évaluation de la continuité lorsque pertinents.</td><td><span class="norm">ISA 540 (révisée)</span>, <span class="norm">ISA 560</span> (événements postérieurs), <span class="norm">ISA 570 (révisée)</span> (continuité).</td><td>Modèle de test paramétrable avec source et méthode ; validation obligatoire par expert et revue spécifique.</td></tr>
+      <tr><td><strong>8. Évaluation / revue</strong></td><td>Évaluer anomalies identifiées, traiter désaccords, effectuer revue de supervision et résoudre les points ouverts.</td><td><span class="norm">ISA 230</span> (documentation), <span class="norm">ISA 450</span> (anomalies), ISA 220 (qualité), ISA 260/265 selon communication.</td><td>Note de revue reliée à un objet ; réponse et statut ; clôture bloquée par règles de workflow configurées, jamais présentée comme preuve suffisante.</td></tr>
+      <tr><td><strong>9. Conclusion / rapport</strong></td><td>Rassembler constats et éléments non résolus, documenter conclusion et produire une maquette de rapport.</td><td><span class="norm">ISA 700</span> (opinion et rapport), ISA 705 (opinion modifiée), ISA 706 (paragraphes d’observation), ISA 701/720 selon cas.</td><td>Export de portfolio portant « simulé » ; aucune opinion générée automatiquement ; textes et responsabilités validés hors outil.</td></tr>
+      <tr><td><strong>10. Archivage / qualité</strong></td><td>Figer la version du dossier, conserver l’index et appliquer la politique de conservation convenue.</td><td>ISA 230, ISQM 1 / exigences qualité applicables ; règlement professionnel OHADA n° 01/2017.</td><td>Export indexé, trace d’archivage et politique définie par organisation ; ne pas imposer une durée générique dans le prototype.</td></tr>
+    </tbody></table>
+    <div class="callout gold"><strong>À propos des normes.</strong> Les références ISA ci-dessus sont une cartographie de conception, pas une transposition exhaustive ni une déclaration de conformité. L’espace OHADA harmonise les pratiques professionnelles par le Règlement n° 01/2017 ; le dossier réel doit suivre les textes, versions, règles de déontologie et exigences locales applicables à la mission et à la date concernées.</div>
+    <h3 id="page-methodologie">Page « Méthodologie » dans l’application</h3>
+    <p>La méthodologie mérite une page dédiée, accessible depuis la navigation principale et depuis les fiches de mission. Elle sert de guide contextuel à l’équipe, pas de cours normatif exhaustif ni de substitut à la méthodologie approuvée du cabinet.</p>
+    <div class="grid">
+      <article class="card tint"><h4>Contenu d’une fiche d’étape</h4><ul><li>Objectif et conditions d’entrée/sortie.</li><li>Travaux à effectuer et décisions à documenter.</li><li>Livrables attendus : lettre, programme, feuille de travail, mémo ou rapport.</li><li>Rôles attendus, revue et points de vigilance.</li><li>Normes / textes reliés, champ d’application, édition et date d’effet.</li></ul></article>
+      <article class="card tint"><h4>Navigation et liens</h4><ul><li>Sommaire des étapes avec état dans la mission active.</li><li>Liens depuis une procédure vers la fiche de méthode et les normes concernées.</li><li>Filtres par type de mission, secteur, référentiel et statut « à valider ».</li><li>Source officielle consultable dans un nouvel onglet, avec date de vérification.</li><li>Glossaire des termes : assertion, matérialité, élément probant, anomalie, etc.</li></ul></article>
+    </div>
+    <table><thead><tr><th>Fiche de méthodologie</th><th>Pourquoi / contenu conseillé</th><th>Normes liées (ouvrir la fiche)</th><th>Livrable généré ou relié</th></tr></thead><tbody>
+      <tr><td>Acceptation et maintien</td><td>Mandat, indépendance, compétence, préconditions et décision d’accepter.</td><td><a href="#ref-isa-210">ISA 210</a>, <a href="#ref-isa-220">ISA 220</a>, <a href="#ref-isqm-1">ISQM 1</a>, éthique / OHADA.</td><td>Checklist d’acceptation, lettre de mission.</td></tr>
+      <tr><td>Planification</td><td>Stratégie, calendrier, équipe, matérialité proposée et planification des travaux.</td><td><a href="#ref-isa-300">ISA 300</a>, <a href="#ref-isa-320">ISA 320</a>, <a href="#ref-isa-220">ISA 220</a>.</td><td>Plan de mission, calendrier, mémo de planification.</td></tr>
+      <tr><td>Compréhension et risques</td><td>Entité, environnement, contrôles, risques, assertions et risques de fraude.</td><td><a href="#ref-isa-315">ISA 315</a>, <a href="#ref-isa-240">ISA 240</a>, <a href="#ref-isa-250">ISA 250</a>.</td><td>Questionnaires, cartographie processus, matrice risques/assertions.</td></tr>
+      <tr><td>Réponses aux risques</td><td>Tests de contrôles et procédures substantielles alignés sur le risque évalué.</td><td><a href="#ref-isa-330">ISA 330</a>, <a href="#ref-isa-265">ISA 265</a>, <a href="#ref-isa-540">ISA 540</a> selon les postes.</td><td>Programme de travail, feuilles de tests de contrôles.</td></tr>
+      <tr><td>Éléments probants</td><td>Population, échantillonnage, pièces, confirmations et analyses.</td><td><a href="#ref-isa-500">ISA 500</a>, <a href="#ref-isa-501">ISA 501</a>, <a href="#ref-isa-505">ISA 505</a>, <a href="#ref-isa-520">ISA 520</a>, <a href="#ref-isa-530">ISA 530</a>.</td><td>Feuilles de tests, circularisations/confirmations, synthèse analytique.</td></tr>
+      <tr><td>Évaluation et clôture</td><td>Anomalies, estimations, événements postérieurs, continuité et revue globale.</td><td><a href="#ref-isa-230">ISA 230</a>, <a href="#ref-isa-450">ISA 450</a>, <a href="#ref-isa-540">ISA 540</a>, <a href="#ref-isa-560">ISA 560</a>, <a href="#ref-isa-570">ISA 570</a>, <a href="#ref-isa-220">ISA 220</a>.</td><td>Tableau des anomalies, mémo de clôture, représentation écrite.</td></tr>
+      <tr><td>Rapport et communication</td><td>Conclusion de l’auditeur et communication aux organes compétents, selon mission et cadre.</td><td><a href="#ref-isa-260">ISA 260</a>, <a href="#ref-isa-265">ISA 265</a>, <a href="#ref-isa-700">ISA 700</a>, <a href="#ref-isa-701">ISA 701</a>, <a href="#ref-isa-705">ISA 705</a>, <a href="#ref-isa-706">ISA 706</a>, <a href="#ref-isa-720">ISA 720</a>.</td><td>Lettre de recommandations, projet de rapport clairement soumis à validation humaine.</td></tr>
+    </tbody></table>
+    <h4>Index de références : fiches normes et sources officielles</h4>
+    <p class="small">Chaque référence ci-dessous est consultable depuis les étapes de méthode. Le lien externe mène au portail officiel IAASB où retrouver la publication correspondante et son statut. La date d’effet et l’adoption applicable doivent être établies pour le mandat concret.</p>
+    <div class="grid three">
+      <article class="card" id="ref-isa-210"><strong>ISA 210</strong> · accord sur les termes de la mission. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-220"><strong>ISA 220 (révisée)</strong> · gestion de la qualité d’un audit d’états financiers. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isqm-1"><strong>ISQM 1</strong> · gestion de la qualité au niveau du cabinet. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-300"><strong>ISA 300</strong> · planification d’un audit d’états financiers. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-320"><strong>ISA 320</strong> · caractère significatif lors de la planification et de la réalisation. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-315"><strong>ISA 315 (révisée 2019)</strong> · identification et évaluation des risques d’anomalies significatives. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-240"><strong>ISA 240</strong> · responsabilités de l’auditeur concernant la fraude. Vérifier la date d’effet de la révision 2025. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB / statut</a></article>
+      <article class="card" id="ref-isa-250"><strong>ISA 250</strong> · prise en considération des textes légaux et réglementaires. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-330"><strong>ISA 330</strong> · réponses de l’auditeur aux risques évalués. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-265"><strong>ISA 265</strong> · communication des déficiences du contrôle interne. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-500"><strong>ISA 500</strong> · éléments probants. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-501"><strong>ISA 501</strong> · éléments probants spécifiques sélectionnés. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-505"><strong>ISA 505</strong> · confirmations externes. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-520"><strong>ISA 520</strong> · procédures analytiques. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-530"><strong>ISA 530</strong> · sondages en audit. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-230"><strong>ISA 230</strong> · documentation de l’audit. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-450"><strong>ISA 450</strong> · évaluation des anomalies relevées au cours de l’audit. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-540"><strong>ISA 540 (révisée)</strong> · audit des estimations comptables et informations associées. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-560"><strong>ISA 560</strong> · événements postérieurs à la clôture. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-570"><strong>ISA 570</strong> · continuité d’exploitation. Vérifier la date d’effet de la révision 2024. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB / statut</a></article>
+      <article class="card" id="ref-isa-260"><strong>ISA 260 (révisée)</strong> · communication avec les personnes constituant le gouvernement d’entreprise. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-700"><strong>ISA 700 (révisée)</strong> · opinion et rapport sur des états financiers. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-701"><strong>ISA 701</strong> · communication des points clés de l’audit, si applicable. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-705"><strong>ISA 705 (révisée)</strong> · opinion modifiée dans le rapport de l’auditeur indépendant. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-706"><strong>ISA 706 (révisée)</strong> · paragraphes d’observation et autres points dans le rapport. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+      <article class="card" id="ref-isa-720"><strong>ISA 720 (révisée)</strong> · autres informations accompagnant les états financiers. <a href="https://www.iaasb.org/standards-pronouncements">Source IAASB</a></article>
+    </div>
+    <p class="small">Édition repère de ce dossier : <a href="https://www.iaasb.org/publications/2025-handbook-international-quality-management-auditing-review-other-assurance-and-related-services">Handbook IAASB 2025</a>. Il comprend ISA 240 (révisée) et ISA 570 (révisée 2024), indiquées comme pas encore effectives dans cette édition. Afficher dans l’application le statut « publiée », « effective » et « adoptée localement » séparément.</p>
+    <div class="callout gold"><strong>Versionnement indispensable :</strong> afficher édition, date de publication, date d’entrée en vigueur et adoption locale séparément. Le Handbook IAASB 2025 inclut notamment ISA 240 (révisée) et ISA 570 (révisée 2024) qui ne sont pas encore en vigueur selon le handbook ; la page doit prévenir l’utilisateur et ne pas activer une exigence sur la seule base de sa publication.</div>
+  </section>
+
+  <section id="normes">
+    <h2>6. Référentiels comptables et couches réglementaires</h2>
+    <p>Le paramétrage initial est d’abord une décision de cadrage de mission : pays, forme et catégorie d’entité, secteur, exercice, nature de mission, référentiel comptable et normes professionnelles pertinentes.</p>
+    <table><thead><tr><th>Contexte</th><th>Cadre à examiner</th><th>Conséquence produit</th></tr></thead><tbody>
+      <tr><td>Société commerciale de l’espace OHADA</td><td>AUDCIF / SYSCOHADA révisé ; AUSCGIE pour les obligations de société et missions légales ; ISA selon le cadre professionnel harmonisé ; IFRS si applicable à l’entité.</td><td>Bibliothèque de cycles et mapping de comptes versionnés ; mention visible du référentiel et de l’exercice.</td></tr>
+      <tr><td>Banque / établissement de crédit / EMF</td><td>Textes COBAC et CEMAC, référentiel comptable sectoriel, diligences spécifiques des commissaires aux comptes. AUDCIF art. 5 exclut plusieurs institutions financières du SYSCOHADA général.</td><td>Module sectoriel distinct ; règles prudentielles datées et approuvées, jamais héritées silencieusement du modèle PME.</td></tr>
+      <tr><td>Assurance / réassurance</td><td>Cadre CIMA, règles comptables et de supervision spécifiques ; autres règles applicables à la catégorie.</td><td>Extension ultérieure : provisions techniques, actifs représentatifs, primes, sinistres et réassurance, avec expert métier.</td></tr>
+      <tr><td>Marché financier régional</td><td>Textes et instructions COSUMAF, agréments et obligations de l’acteur ; référentiel comptable applicable à l’entité.</td><td>Versions des exigences, dates d’effet et statut « à confirmer » ; cas de démo sans acteur réel ni agrément prétendu.</td></tr>
+      <tr><td>Prévoyance sociale / secteur public / projet financé</td><td>CIPRES ou régimes nationaux ; comptabilité publique, réglementation nationale, bailleurs et clauses de financement selon périmètre.</td><td>Pack séparé par entité, pays et source de financement, après validation juridique et métier.</td></tr>
+    </tbody></table>
+    <div class="callout red"><strong>Règle de conception :</strong> le référentiel est une donnée obligatoire du contexte de mission, jamais une valeur implicite. Le logiciel conserve la source, la date d’effet, la version et la personne qui approuve le mapping ou la checklist utilisés.</div>
+  </section>
+
+  <section id="architecture">
+    <h2>7. Architecture applicative</h2>
+    <p class="lede">Deux paliers sont à distinguer : un MVP portfolio local, réutilisant les choix techniques connus de BrokerControl360, puis une architecture de production qui n’est envisageable qu’après validation métier, sécurité, confidentialité et exigences contractuelles.</p>
+    <div class="diagram" role="img" aria-label="Architecture logique avec interface React, API FastAPI, services métier, base de données, stockage de pièces, journal et exports">
+      <svg viewBox="0 0 1060 365" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#176f99"/></marker></defs>
+        <g font-family="Arial,sans-serif" text-anchor="middle">
+          <rect x="35" y="30" width="285" height="77" rx="13" fill="#102f46"/><text x="177" y="61" fill="#fff" font-size="17" font-weight="700">Interface Web</text><text x="177" y="85" fill="#c9dce5" font-size="13">React · TypeScript · React Router</text>
+          <rect x="386" y="30" width="285" height="77" rx="13" fill="#e9f4f6" stroke="#b9d5dc" stroke-width="2"/><text x="528" y="61" fill="#102f46" font-size="17" font-weight="700">API applicative</text><text x="528" y="85" fill="#526875" font-size="13">FastAPI · Pydantic · OpenAPI</text>
+          <rect x="737" y="30" width="285" height="77" rx="13" fill="#e9f4f6" stroke="#b9d5dc" stroke-width="2"/><text x="879" y="61" fill="#102f46" font-size="17" font-weight="700">Identité & autorisations</text><text x="879" y="85" fill="#526875" font-size="13">RBAC · SSO/OIDC en production</text>
+          <path d="M323 68H378" stroke="#176f99" stroke-width="3" marker-end="url(#a2)"/><path d="M674 68H729" stroke="#176f99" stroke-width="3" marker-end="url(#a2)"/>
+          <rect x="45" y="164" width="218" height="82" rx="12" fill="#fff" stroke="#b9d5dc" stroke-width="2"/><text x="154" y="194" fill="#102f46" font-size="15" font-weight="700">Données de mission</text><text x="154" y="218" fill="#526875" font-size="12">PostgreSQL · tenant / mission</text>
+          <rect x="300" y="164" width="218" height="82" rx="12" fill="#fff" stroke="#b9d5dc" stroke-width="2"/><text x="409" y="194" fill="#102f46" font-size="15" font-weight="700">Moteur de workflow</text><text x="409" y="218" fill="#526875" font-size="12">statuts · règles · validations</text>
+          <rect x="555" y="164" width="218" height="82" rx="12" fill="#fff" stroke="#b9d5dc" stroke-width="2"/><text x="664" y="194" fill="#102f46" font-size="15" font-weight="700">Service d’import / analyse</text><text x="664" y="218" fill="#526875" font-size="12">CSV · contrôles · exécutions</text>
+          <rect x="810" y="164" width="218" height="82" rx="12" fill="#fff" stroke="#b9d5dc" stroke-width="2"/><text x="919" y="194" fill="#102f46" font-size="15" font-weight="700">Service documentaire</text><text x="919" y="218" fill="#526875" font-size="12">pièces · index · exports</text>
+          <path d="M528 111V139H154V156M528 139H409V156M528 139H664V156M528 139H919V156" fill="none" stroke="#176f99" stroke-width="2" marker-end="url(#a2)"/>
+          <rect x="135" y="285" width="315" height="54" rx="11" fill="#eaf6f1" stroke="#badfcd"/><text x="292" y="307" fill="#225f48" font-size="14" font-weight="700">Journal append-only & versions</text><text x="292" y="326" fill="#527567" font-size="11">auteur · date · objet · action · justification</text>
+          <rect x="610" y="285" width="315" height="54" rx="11" fill="#fff5df" stroke="#ecd9a8"/><text x="767" y="307" fill="#775b17" font-size="14" font-weight="700">Stockage chiffré de pièces</text><text x="767" y="326" fill="#7e6d42" font-size="11">scan · accès contrôlé · conservation paramétrée</text>
+          <path d="M409 247V272H292V278M919 247V272H767V278" fill="none" stroke="#148477" stroke-width="2" marker-end="url(#a2)"/>
+        </g>
+      </svg>
+    </div>
+    <table><thead><tr><th>Couche</th><th>MVP portfolio</th><th>Évolution production</th><th>Points d’attention</th></tr></thead><tbody>
+      <tr><td>Front-end</td><td>React 19, TypeScript, Vite, React Router ; design responsive et multi-rôles de démo.</td><td>Composants accessibles, SSO, localisation FR/EN, tests navigateur et gestion de session sécurisée.</td><td>Le sélecteur de rôle de démonstration ne constitue pas une sécurité.</td></tr>
+      <tr><td>API / métier</td><td>FastAPI stateless ; validation d’imports, calculs explicables et exports.</td><td>API versionnée, permissions côté serveur, idempotence, quotas et tâches asynchrones d’analyse.</td><td>Ne pas se fier à la seule validation du navigateur pour les autorisations.</td></tr>
+      <tr><td>Données structurées</td><td>Dexie / IndexedDB local, fixtures synthétiques et reset rapide, selon le modèle existant.</td><td>PostgreSQL, séparation client/mission, migrations, sauvegardes et restauration éprouvées.</td><td>IndexedDB n’est ni synchronisé, ni adapté à la collaboration multi-utilisateur de production.</td></tr>
+      <tr><td>Documents</td><td>PDF/CSV créés pour la démonstration ; stockage local ou données embarquées.</td><td>Stockage objet privé, chiffrement, antivirus, URL signées courtes, journal d’accès et règles de conservation.</td><td>Pas de vraies pièces client dans l’hébergement portfolio.</td></tr>
+      <tr><td>Analytics</td><td>Règles déterministes versionnées ; résultats reliés aux lignes importées.</td><td>Worker asynchrone, métriques d’exécution, quotas et archivage du jeu de paramètres.</td><td>Les signaux sont des pistes à examiner, non des assertions de fraude.</td></tr>
+      <tr><td>Observabilité</td><td>Logs techniques sans données sensibles ; erreurs de validation montrées clairement.</td><td>Monitoring, alertes, audit de sécurité, corrélation par identifiant de mission et procédure incident.</td><td>Ne jamais inscrire le contenu des pièces ou données sensibles dans les logs.</td></tr>
+    </tbody></table>
+    <h3>Architecture de modules front-end conseillée</h3>
+    <p><span class="pill">/missions</span><span class="pill">/planning</span><span class="pill">/catalogue</span><span class="pill">/risques</span><span class="pill">/programme</span><span class="pill">/imports</span><span class="pill">/preuves</span><span class="pill">/revues</span><span class="pill">/constats</span><span class="pill">/documents</span><span class="pill">/methodologie</span><span class="pill">/cloture</span><span class="pill">/administration</span></p>
+    <p class="small">Réutiliser de BrokerControl360 les conventions de formulaires, les validations, les composants de tableau, le journal et les exports lorsque leur modèle métier s’y prête. Éviter de réutiliser ses objets de portefeuille ou d’ordre comme modèle d’audit : les agrégats métier sont différents.</p>
+  </section>
+
+  <section id="donnees">
+    <h2>8. Modèle de données et traçabilité</h2>
+    <p>Le modèle doit rendre explicite le rattachement des éléments, pas seulement stocker des pièces jointes en vrac. L’identifiant de mission doit être propagé et contrôlé sur chaque objet métier.</p>
+    <table><thead><tr><th>Entité</th><th>Champs centraux</th><th>Relation / règle</th></tr></thead><tbody>
+      <tr><td><strong>Mission</strong></td><td>client, entité, pays, période, secteur, type, devise, référentiel, version, statut</td><td>Racine des données ; contexte réglementaire figé pour chaque version de mission.</td></tr>
+      <tr><td><strong>Utilisateur / affectation</strong></td><td>identité, rôle, périmètre, dates d’accès</td><td>Accès au niveau client/mission ; séparation préparateur/réviseur selon workflow.</td></tr>
+      <tr><td><strong>Cycle / risque / assertion</strong></td><td>processus, description, évaluation, assertion, source, réponse</td><td>Un risque peut être lié à plusieurs procédures ; conserver auteur et historique d’évaluation.</td></tr>
+      <tr><td><strong>Programme / procédure</strong></td><td>objectif, méthode, version, responsable, échéance, résultat</td><td>Le modèle de travail peut être adapté ; la version utilisée sur la mission ne change pas rétroactivement.</td></tr>
+      <tr><td><strong>Population / import</strong></td><td>source, schéma, hash, période, filtres, totaux, statut de validation</td><td>Immutabilité logique de la source ; corrections par nouvel import ou événement lié.</td></tr>
+      <tr><td><strong>Échantillon / élément testé</strong></td><td>méthode, graine, sélection, référence ligne, résultat</td><td>Sélection reproductible ; ne pas effacer les éléments écartés et leur motif.</td></tr>
+      <tr><td><strong>Preuve</strong></td><td>nom logique, emplacement sécurisé, version, origine, déposant, date, empreinte</td><td>Liée à une procédure / exception ; accès et téléchargement journalisés.</td></tr>
+      <tr><td><strong>Revue / constat / action</strong></td><td>commentaire, statut, gravité indicative, réponse, responsable, échéance</td><td>Rattachement aux risques et travaux concernés ; validation de clôture séparée.</td></tr>
+      <tr><td><strong>Modèle / document généré</strong></td><td>type, version, données d’entrée, statut, approbateurs, export PDF, empreinte</td><td>Le modèle et le PDF sont liés à la mission ; chaque émission est versionnée et journalisée.</td></tr>
+      <tr><td><strong>Référence normative</strong></td><td>code, titre, organisme, édition, dates, juridiction, URL officielle, statut de validation</td><td>La norme ne s’applique pas implicitement : rattachement au type de mission et validation locale.</td></tr>
+      <tr><td><strong>Événement d’audit</strong></td><td>acteur, action, objet, avant/après minimal, horodatage, motif</td><td>Journal append-only applicatif ; éviter l’enregistrement de contenu sensible intégral.</td></tr>
+    </tbody></table>
+    <div class="callout"><strong>Invariant métier :</strong> aucun résultat soumis ne peut exister sans procédure, préparateur et contexte de mission ; aucune pièce ne doit être orpheline ; aucune conclusion ne peut masquer les points de revue et exceptions encore ouverts.</div>
+  </section>
+
+  <section id="securite">
+    <h2>9. Sécurité, confidentialité et qualité</h2>
+    <div class="grid">
+      <article class="card tint"><h3>Dans le portfolio</h3><ul><li>Entités, personnes, contrats et fichiers entièrement synthétiques.</li><li>Étiquette visible « données fictives — démonstration » dans les pages et exports.</li><li>Rôle démo expliqué comme simulation de parcours et non contrôle d’accès réel.</li><li>Pas de secret, KYC, compte client ou document réel dans les dépôts et captures.</li><li>Reset du jeu de démonstration et sauvegarde/export de test.</li></ul></article>
+      <article class="card tint"><h3>Avant tout pilote réel</h3><ul><li>Modèle de menace, revue des permissions et tests d’isolation des tenants.</li><li>SSO/MFA, moindre privilège, gestion du cycle de vie des comptes.</li><li>Chiffrement en transit et au repos ; gestion des clés et sauvegardes.</li><li>Politique contractuelle de confidentialité, résidence, conservation et suppression.</li><li>Journal d’accès, procédure de violation, tests d’intrusion et revue juridique locale.</li></ul></article>
+    </div>
+    <h3>Contrôles de qualité intégrés</h3>
+    <ul>
+      <li><strong>Séparation des tâches :</strong> le préparateur n’approuve pas seul son propre travail ; dérogation éventuelle motivée, visible et autorisée.</li>
+      <li><strong>Revue :</strong> commentaires contextualisés, réponses conservées, statut de résolution et identité du réviseur.</li>
+      <li><strong>Historique :</strong> changements de seuil, de procédure, de mapping et de conclusion attribués, datés et justifiés.</li>
+      <li><strong>Exports :</strong> version, date de génération, périmètre, état simulé/réel et index des pièces visibles.</li>
+      <li><strong>Analyses :</strong> règle, paramètres, version du moteur, lignes affectées et résultat reproductible.</li>
+    </ul>
+    <p class="small">Les exigences de protection des données, secret professionnel, archivage et localisation varient selon la juridiction et le contrat. Elles doivent être cartographiées avant usage de documents ou données réels ; ce dossier ne fixe pas de durée légale générique.</p>
+  </section>
+
+  <section id="experience">
+    <h2>10. UX et indicateurs</h2>
+    <h3>Navigation principale</h3>
+    <ol><li><strong>Vue mission :</strong> échéances, avancement, risques principaux, demandes et blocages.</li><li><strong>Planification :</strong> contexte, équipe, cycles, risques, assertions et programme.</li><li><strong>Exécution :</strong> tests affectés, population, éléments sélectionnés et preuves.</li><li><strong>Revue :</strong> notes ouvertes, réponses, exceptions et décisions.</li><li><strong>Documents :</strong> bibliothèque de modèles, brouillons, revue, prévisualisation et export PDF.</li><li><strong>Méthodologie :</strong> parcours par étapes, références normatives cliquables et modèles liés au travail en cours.</li><li><strong>Clôture :</strong> constats, actions, éléments ouverts et export du dossier simulé.</li></ol>
+    <h3>Indicateurs utiles (définitions affichées)</h3>
+    <table><thead><tr><th>Indicateur</th><th>Définition de démo</th><th>Interprétation prudente</th></tr></thead><tbody>
+      <tr><td>Procédures soumises / planifiées</td><td>Procédures dont le résultat est soumis, rapportées aux procédures actives.</td><td>Avancement déclaré, pas une mesure de qualité d’audit.</td></tr>
+      <tr><td>Preuves liées</td><td>Procédures soumises avec au moins une référence de preuve / procédures soumises.</td><td>Complétude de lien, pas suffisance ni pertinence des preuves.</td></tr>
+      <tr><td>Revues ouvertes</td><td>Nombre, niveau et ancienneté des commentaires non résolus.</td><td>Priorisation de supervision ; critères de clôture à définir.</td></tr>
+      <tr><td>Exceptions en attente</td><td>Écarts sans réponse ou conclusion documentée.</td><td>File de travail ; ne présume ni anomalie significative ni fraude.</td></tr>
+      <tr><td>Risques sans réponse liée</td><td>Risques évalués sans procédure ou réponse référencée.</td><td>Signal de couverture à examiner avec le responsable de mission.</td></tr>
+    </tbody></table>
+  </section>
+
+  <section id="mvp">
+    <h2>11. MVP et critères d’acceptation</h2>
+    <h3>Périmètre MVP conseillé</h3>
+    <div class="grid three">
+      <article class="card"><span class="badge gold">Must</span><h3>Mission & risques</h3><p>Une entité fictive, un exercice, 4 cycles, risques/ assertions, équipe et planning.</p></article>
+      <article class="card"><span class="badge gold">Must</span><h3>Catalogue starter</h3><p>Risques candidats, assertions expliquées et procédures types pour les quatre cycles de démo, tous modifiables.</p></article>
+      <article class="card"><span class="badge gold">Must</span><h3>Tests & preuves</h3><p>Programme de 8–12 procédures, échantillons simulés, résultats, exceptions et pièces liées.</p></article>
+      <article class="card"><span class="badge gold">Must</span><h3>Revue & clôture</h3><p>Préparateur/réviseur, note ouverte et résolue, constat et export imprimable simulé.</p></article>
+      <article class="card"><span class="badge gold">Must</span><h3>Documents PDF</h3><p>Lettre de mission modèle, 3 feuilles de travail, brouillon de revue et export PDF imprimable.</p></article>
+      <article class="card"><span class="badge gold">Must</span><h3>Méthodologie</h3><p>Page par phase d’audit avec liens normatifs, sources, applicabilité et date/version.</p></article>
+      <article class="card"><span class="badge">Should</span><h3>CSV grand livre</h3><p>Mapping, validation de colonnes et équilibre débit/crédit, 5 analyses explicables.</p></article>
+      <article class="card"><span class="badge">Should</span><h3>Journal de mission</h3><p>Historique lisible des changements structurants et de leur auteur.</p></article>
+      <article class="card"><span class="badge green">Later</span><h3>Portail client</h3><p>Demandes, dépôt externe sécurisé, notifications et authentification véritable.</p></article>
+    </div>
+    <h3>Critères d’acceptation démontrables</h3>
+    <ul>
+      <li>Une mission affichera son pays, son secteur et un référentiel/version clairement identifiés.</li>
+      <li>Les risques proposés seront présentés comme candidats, confirmer/écarter/adapter nécessitera une action humaine documentée.</li>
+      <li>Chaque procédure modèle indiquera l’objectif, les assertions/risques liés, les étapes et les références de méthode.</li>
+      <li>Un risque sera relié à au moins une assertion et à une procédure de réponse.</li>
+      <li>La soumission d’un test conservera résultat, préparateur, date et référence probante.</li>
+      <li>Un réviseur pourra demander un complément ; la réponse et la résolution seront visibles dans l’historique.</li>
+      <li>Une exception d’analyse mènera à la ligne source et pourra être classée avec justification humaine.</li>
+      <li>Une lettre de mission et une feuille de travail pourront être préremplies, prévisualisées, imprimées en PDF et attribuées à un modèle versionné.</li>
+      <li>Chaque étape de la page Méthodologie proposera des liens vers les références normatives citées et leur source officielle.</li>
+      <li>Un export PDF/HTML portera une mention explicite de données et conclusions simulées.</li>
+      <li>Un reset restaure le même scénario initial sans dépendre d’un compte ou d’un serveur externe.</li>
+    </ul>
+    <p><strong>À laisser hors MVP :</strong> opinion d’audit automatisée, connecteur bancaire, signatures électroniques à valeur probante, traitement de vraies données client, moteur générique de conformité CEMAC, IA décisionnelle et gestion exhaustive des normes sectorielles.</p>
+  </section>
+
+  <section id="roadmap">
+    <h2>12. Feuille de route de réalisation</h2>
+    <p>Estimation indicative pour une personne à temps plein connaissant déjà React/TypeScript et FastAPI ; prévoir une validation de vocabulaire auprès d’un praticien avant de figer les écrans.</p>
+    <div class="phase"><time>Jours 1–3</time><div><strong>Découverte & domaine.</strong> Confirmer persona principal et scénario PME ; formaliser cycle, risques candidats, assertions et modèle de procédure ; faire valider vocabulaire et exemples par un auditeur.</div></div>
+    <div class="phase"><time>Jours 4–6</time><div><strong>Prototype UX.</strong> Maquettes cockpit, matrice risque/assertion/procédure, fiche de test, pièce, note de revue et clôture ; définir les états vides et les erreurs.</div></div>
+    <div class="phase"><time>Semaine 2</time><div><strong>Workflow central.</strong> CRUD local, rôles de démonstration, transitions, journal, fixtures synthétiques, reset et export de mission.</div></div>
+    <div class="phase"><time>Semaine 3</time><div><strong>Documents & méthodologie.</strong> Construire les gabarits lettre de mission/feuille de travail, aperçu A4 et PDF via impression ; créer les fiches de méthode et liens officiels versionnés.</div></div>
+    <div class="phase"><time>Semaine 4</time><div><strong>Données & analytics.</strong> Import CSV, mapping, contrôles de cohérence, échantillonnage reproductible et 5–8 règles explicables avec exceptions injectées.</div></div>
+    <div class="phase"><time>Semaine 5</time><div><strong>Qualité portfolio.</strong> Accessibilité, responsive, scénario complet, tests critiques, capture/vidéo, schéma architecture et notice des limites.</div></div>
+    <h3>Suite produit éventuelle</h3>
+    <table><thead><tr><th>Étape</th><th>Extension</th><th>Pourquoi après AuditMission360</th></tr></thead><tbody>
+      <tr><td>1</td><td>AuditData360</td><td>Réutilise import, mapping, lignage et exceptions ; renforce le récit data.</td></tr>
+      <tr><td>2</td><td>CloseControl360</td><td>Rapprochements et clôture, public plus large : finance et cabinets.</td></tr>
+      <tr><td>3</td><td>CreditAudit CEMAC</td><td>Spécialisation crédit après validation des exigences COBAC/référentiel sectoriel.</td></tr>
+      <tr><td>4</td><td>ControlFollow360</td><td>Extension au suivi des recommandations d’audit interne et comité.</td></tr>
+    </tbody></table>
+  </section>
+
+  <section id="demo">
+    <h2>13. Scénario de démo portfolio (6–8 minutes)</h2>
+    <ol class="workflow">
+      <li><strong>Ouvrir la mission.</strong><br>PME fictive, pays, période et référentiel clairement affichés.</li>
+      <li><strong>Comprendre un risque.</strong><br>Cycle ventes ou trésorerie et assertion retenue avec justification.</li>
+      <li><strong>Lire le programme.</strong><br>Ouvrir une procédure reliée au risque puis l’affecter à un préparateur.</li>
+      <li><strong>Importer la population.</strong><br>Charger le CSV synthétique et valider colonnes, période et totaux.</li>
+      <li><strong>Examiner un signal.</strong><br>Remonter d’une écriture inhabituelle à sa ligne source sans la qualifier automatiquement.</li>
+      <li><strong>Documenter le test.</strong><br>Lier une pièce factice, décrire le contrôle réalisé et saisir le résultat.</li>
+      <li><strong>Faire la revue.</strong><br>Basculer de profil, demander une pièce complémentaire, répondre puis résoudre le point.</li>
+      <li><strong>Générer.</strong><br>Ouvrir le modèle de lettre de mission ou la feuille de travail liée puis prévisualiser.</li>
+      <li><strong>Consulter la méthode.</strong><br>Suivre un lien d’étape vers sa norme et la source officielle.</li>
+      <li><strong>Restituer.</strong><br>Créer un constat fictif, consulter le journal et exporter le dossier simulé en PDF.</li>
+    </ol>
+    <div class="callout"><strong>Pitch de présentation :</strong> « AuditMission360 est un démonstrateur de dossier de mission. Il rend la chaîne risque–procédure–preuve–revue consultable et traçable. Les données sont fictives ; l’outil aide à documenter le jugement, il ne rend pas l’opinion. »</div>
+    <h3>Éléments à présenter dans le portfolio</h3>
+    <ul><li>Application web avec remise à zéro et scénario complet jouable.</li><li>Vidéo courte montrant les rôles préparateur et réviseur.</li><li>Extrait de dossier de travail et index d’éléments probants fictifs.</li><li>Diagramme architecture, modèle de données et explication des choix.</li><li>Note sur la provenance, les normes de conception, les limites et la sécurité.</li><li>Exemple de faux positif résolu par examen humain, pour montrer le comportement réel de l’outil.</li></ul>
+  </section>
+
+  <section id="risques">
+    <h2>14. Risques et décisions à valider</h2>
+    <table><thead><tr><th>Risque / question</th><th>Réponse proposée</th><th>Validation nécessaire</th></tr></thead><tbody>
+      <tr><td>MVP trop ambitieux</td><td>Limiter le premier cas à une PME et aux cycles ventes, trésorerie, achats et stocks.</td><td>Choisir l’audit externe ou audit interne comme récit principal.</td></tr>
+      <tr><td>Confusion de référentiels</td><td>Rendre secteur, référentiel et version visibles et obligatoires ; ne pas généraliser les comptes PME aux banques.</td><td>Vérifier le scénario et le mapping avec un professionnel.</td></tr>
+      <tr><td>Normes datées ou non applicables</td><td>Bibliothèque de références avec source, version/date, champ et statut de validation.</td><td>Confirmer édition ISA adoptée, réglementation nationale et textes sectoriels à la date de mission.</td></tr>
+      <tr><td>Une alerte est prise pour une preuve</td><td>Libeller « signal à investiguer », exposer la règle et permettre la résolution documentée.</td><td>Tester libellés, rapports et pitch avec un auditeur.</td></tr>
+      <tr><td>Données sensibles exposées</td><td>Fixtures inventées uniquement dans le portfolio ; sécurité de production distincte et documentée.</td><td>Évaluer hébergement, juridiction, confidentialité, résidence et conservation avant pilote.</td></tr>
+      <tr><td>Le dashboard confond complétude et qualité</td><td>Présenter des définitions et limites à côté de chaque KPI.</td><td>Choisir des indicateurs descriptifs et bannir la promesse de conformité automatique.</td></tr>
+      <tr><td>Frontière externe / interne floue</td><td>Types de mission configurables mais workflows et modèles identifiés explicitement.</td><td>Décider si le premier démonstrateur montre certification externe ou évaluation de contrôle interne.</td></tr>
+    </tbody></table>
+    <div class="callout gold"><strong>Décision conseillée pour commencer :</strong> audit financier pédagogique d’une PME fictive, référentiel SYSCOHADA affiché à titre de scénario et normes ISA citées comme repères de conception. La voie bancaire CEMAC est une spécialisation ultérieure, une fois les textes sectoriels et données de test validés.</div>
+  </section>
+
+  <section id="sources">
+    <h2>15. Sources et liens de référence</h2>
+    <p>Les références ci-dessous prolongent les sources du rapport d’audit CEMAC. Les pages officielles doivent être revérifiées avant toute mise en production ou utilisation sur une mission réelle.</p>
+    <ol>
+      <li><strong>Rapport source du présent dossier.</strong> <a href="rapport-audit-financier-cemac.html">Des outils numériques utiles à l’audit financier en zone CEMAC</a> — besoins, opportunités, secteurs et garde-fous du portfolio.</li>
+      <li><strong>OHADA — AUDCIF.</strong> Texte et présentation de l’Acte uniforme relatif au droit comptable et à l’information financière, incluant le périmètre SYSCOHADA : <a href="https://www.ohada.org/acte-uniforme-relatif-au-droit-comptable-et-a-linformation-financiere-audcif/">page institutionnelle OHADA</a>.</li>
+      <li><strong>OHADA — Règlement n° 01/2017/CM/OHADA.</strong> Harmonisation des pratiques des professionnels de la comptabilité et de l’audit dans l’espace OHADA : <a href="https://www.ohada.org/mise-en-ligne-du-reglement-portant-harmonisation-des-pratiques-des-professionnels-de-la-comptabilite-et-de-l-audit-dans-les-etats-membres-de-l-ohada/">présentation et document</a>.</li>
+      <li><strong>OHADA — Guide pratique d’application des normes professionnelles.</strong> Support de présentation sur les normes professionnelles et les diligences d’audit : <a href="https://www.ohada.org/wp-content/uploads/2020/10/OHADA-Guide-pratique-dapplication-des-normes-professionnelles-Support-de-Pre%CC%81sentation.pdf">PDF OHADA</a>.</li>
+      <li><strong>BEAC / COBAC — Rapport annuel 2024.</strong> Contexte bancaire et microfinance, supervision et risques : <a href="https://www.beac.int/wp-content/uploads/2016/10/Rapport-annuel-de-la-COBAC-2024-PDF-14.8-Mo_compressed-1.pdf">rapport annuel COBAC 2024</a>.</li>
+      <li><strong>BEAC — Règlements COBAC.</strong> Registre officiel des textes de supervision et diligence des commissaires aux comptes : <a href="https://www.beac.int/supervision-bancaire/reglements-de-cobac/">page réglementaire</a>.</li>
+      <li><strong>BEAC — Diligences réglementaires des commissaires aux comptes des établissements de crédit CEMAC.</strong> Ressource documentaire à compléter par les textes en vigueur : <a href="https://www.beac.int/wp-content/uploads/2016/10/Dilcomcomptes_CEMAC.pdf">document PDF</a>.</li>
+      <li><strong>COSUMAF — textes réglementaires et instructions.</strong> Références du marché financier régional : <a href="https://cosumaf.org/textes-reglementaires-instructions/">page officielle</a>.</li>
+      <li><strong>IFAC / IAASB.</strong> Normes internationales d’audit et ressources de normalisation ; vérifier éditions, adoption et traduction applicables : <a href="https://www.iaasb.org/">site de l’IAASB</a>.</li>
+      <li><strong>BrokerControl360.</strong> Démonstrateur, conventions de données locales, rôles fictifs, journal et exports : <a href="https://brokercontrol360.vercel.app/">application portfolio</a> et documentation du dépôt.</li>
+    </ol>
+    <div class="callout red"><strong>Limite juridique et professionnelle.</strong> Ce dossier est une spécification produit pour un projet portfolio, pas un avis juridique, comptable ou d’audit. Les listes ISA sont des repères fonctionnels non exhaustifs. L’applicabilité, l’édition en vigueur, la traduction, les obligations d’agrément, le secret professionnel, la protection des données et la conservation doivent être déterminés par des professionnels compétents pour chaque pays, entité et mission.</div>
+  </section>
+
+  <footer class="footer"><strong>Conclusion.</strong> AuditMission360 est le bon premier projet portfolio si son cœur est la chaîne de justification de la mission : risques, procédures, éléments probants, revue et conclusion humaine. Pour se distinguer, montrez un cas jouable, un modèle de données explicite, un audit trail vérifiable et une honnêteté forte sur les référentiels et limites.<br><br>Document préparé à partir de <a href="rapport-audit-financier-cemac.html">rapport-audit-financier-cemac.html</a> · Version de cadrage · 29 septembre 2026.</footer>
+</main>
+</body>
+</html>
